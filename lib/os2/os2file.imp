@@ -1,0 +1,19 @@
+;
+; os2file.imp
+;
++os2file1.s
+DosClose                doscalls 257 1
+DosOpen                 doscalls 273 8
+DosRead                 doscalls 281 4
+DosWrite                doscalls 282 4
+
++os2file2.s
+DosQueryFileInfo        doscalls 279 4
+DosCopy                 doscalls 258 3
+DosCreatePipe           doscalls 239 3
+DosDelete               doscalls 259 1
+DosMove                 doscalls 271 2
+
++os2file3.s
+DosCreateDir            doscalls 270 2
+DosDeleteDir            doscalls 226 1

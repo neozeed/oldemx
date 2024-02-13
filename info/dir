@@ -1,0 +1,64 @@
+-*- Text -*-
+This is the file /emx/info/dir, which contains the topmost node of the
+Info hierarchy.  The first time you invoke Info you start off
+looking at that node, which is (dir)Top.
+
+File: dir	Node: Top	This is the top of the INFO tree
+
+  This (the Directory node) gives a menu of major topics.
+  Typing <Ctrl-Home> returns here, <Escape> exits, <F1> lists all 
+  INFO commands, "h" gives a primer for first-timers, "mcpp<Enter>" 
+  visits cpp topic, etc.
+  
+  --- PLEASE ADD DOCUMENTATION TO THIS TREE. (See INFO topic first.) ---
+
+* Menu: The list of major topics begins on the next line.
+
+* info: (info.info).     Documentation browsing system.
+* cpp: (cpp.info).       GNU C preprocessor.
+* gcc: (gcc.info).       GNU C compiler.
+* gdb: (gdb.info).       GNU debugger.
+* make: (make.info).     GNU make replacement.
+
+File: dir	Node: HelpKeys			*** INFO Command Keys ***
+
+Returning to where you were:
+----------------------------
+Backspace        Back up to the last node you were at. (or 'l')
+
+Using the tutorial:
+-------------------
+h                Invoke the Info tutorial.
+
+Moving within a node:
+---------------------
+Home             Go to the start of this node.
+Page Up          Scroll up one page.
+Page Down        Scroll down one page.
+End              Go to the end of this node.
+
+Selecting other nodes:
+----------------------
+Right Arrow      Move to the "next" node of this node. (or 'n')
+Left Arrow       Move to the "previous" node of this node. (or 'p')
+Ctrl Up Arrow    Move "up" from this node. (or 'u')
+Up Arrow         Highlight previous menu subtopic.
+Down Arrow       Highlight next menu subtopic.
+Enter            Pick the highlighted menu item.
+m                Pick menu item specified by name.
+                 Picking a menu item causes another node to be selected.
+f                Follow a cross reference.  Reads name of reference.
+Backspace        Back up to the last node you were at. (or 'l')
+Ctrl Home        Move to the `directory' node. (or 'd')  
+                 Equivalent to `gDIR'.
+
+Advanced commands:
+------------------
+Escape           Quit Info. (or 'q' or 'x')
+1                Pick first item in node's menu.
+2 - 5            Pick second ... fifth item in node's menu.
+g                Move to node specified by name.
+                 You may include a filename as well, as (FILENAME)NODENAME.
+s                Search through this Info file for a specified string,
+                 and select the node in which the next occurrence is found.
+Ctrl-p           Print the contents of this node.

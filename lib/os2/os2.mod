@@ -1,0 +1,10 @@
+doscalls.o
+os2bad.o
+os2file1.o
+os2file2.o
+os2file3.o
+os2mem1.o
+os2mem2.o
+os2mem3.o
+os2nls1.o
+os2nls2.o

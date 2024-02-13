@@ -1,0 +1,10 @@
+;
+; os2nls.imp
+;
++os2nls1.s
+DosMapCase              nls        7 3
+DosQueryCollate         nls        8 4
+DosQueryCtryInfo        nls        5 4
+
++os2nls2.s
+DosQueryCp              doscalls 291 3

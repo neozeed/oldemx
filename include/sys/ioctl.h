@@ -1,0 +1,2 @@
+/* ioctl.h (emx/gcc) */
+

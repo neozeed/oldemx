@@ -1,0 +1,120 @@
+#
+#	MS/PC-DOS ANSI.SYS termcap
+#
+ansi|ANSI.SYS color:\
+	:co#80:li#25:bs:pt:bl=^G:le=^H:do=^J:\
+	:cl=\E[H\E[2J:ce=\E[K:\
+	:ho=\E[H:cm=\E[%i%d;%dH:\
+	:up=\E[A:do=\E[B:le=\E[C:ri=\E[D:nd=\E[C:\
+	:ti=\E[0;30;43m\E[=7l:te=\E[0m\E[=7h:\
+	:so=\E[1;37;43m:se=\E[0;30;43m:\
+	:us=\E[1;31;43m:ue=\E[0;30;43m:\
+	:mb=\E[5m:md=\E[1;37;43m:\
+        :mr=\E[1;37;43m:me=\E[0;30;43m:\
+	:aw:
+window|ANSI.SYS window:\
+	:co#80:li#25:bs:pt:bl=^G:le=^H:do=^J:\
+	:cl=\E[H\E[2J:ce=\E[K:\
+	:ho=\E[H:cm=\E[%i%d;%dH:\
+	:up=\E[A:do=\E[B:le=\E[C:ri=\E[D:nd=\E[C:\
+	:ti=\E[0;30;47m\E[=7l:te=\E[0;30;47m\E[=7h:\
+	:so=\E[1;37;47m:se=\E[0;30;47m:\
+	:us=\E[1;31;47m:ue=\E[0;30;47m:\
+	:mb=\E[5m:md=\E[1;37;47m:\
+        :mr=\E[1;37;47m:me=\E[0;30;47m:\
+	:aw:
+mono|ANSI.SYS mono:\
+	:co#80:li#25:bs:pt:bl=^G:le=^H:do=^J:\
+	:cl=\E[H\E[2J:ce=\E[K:\
+	:ho=\E[H:cm=\E[%i%d;%dH:\
+	:up=\E[A:do=\E[B:le=\E[C:ri=\E[D:nd=\E[C:\
+        :ti=\E[0m\E[=7l:te=\E[0m\E[=7h:\
+	:so=\E[1m:se=\E[m:us=\E[4m:ue=\E[m:\
+	:mb=\E[5m:md=\E[1m:mr=\E[7m:me=\E[m:
+#
+#	This is a termcap for NNANSI.SYS (New & Improved NANSI.SYS),
+#	a faster and more complete public domain replacement for
+#	ANSI.SYS, and two other ANSI.SYS replacements, NANSI.SYS and
+#	ZANSI.SYS.
+#
+#	NANSI and ZANSI support line insert (al) and delete (dl)
+#	and character insert (ic) and delete (dc) where ANSI.SYS
+#	does not.  NNANSI.SYS also supports clear to end of display
+#	(cd), does reverse video (mr) properly, and emulates SGR
+#	more fully, allowing correct end sequences for standout (se)
+#	and end of underline (ue).
+#
+nnansi|NNANSI.SYS color:\
+        :co#80:li#25:bs:pt:bl=^G:le=^H:do=^J:\
+	:cl=\E[2J:cd=\E[J:ce=\E[K:\
+	:ho=\E[H:cm=\E[%i%d;%dH:\
+	:up=\E[A:do=\E[B:le=\E[C:ri=\E[D:nd=\E[C:\
+	:ti=\E[0;30;43m\E[=7l:te=\E[0m\E[=7h:\
+	:so=\E[1;37;43m:se=\E[0;30;43m:\
+	:us=\E[1;31;43m:ue=\E[0;30;43m:\
+	:mb=\E[5m:md=\E[1;37;43m:me=\E[0;30;43m:\
+        :mh=\E[2m:mr=\E[1;37;43m:\
+	:al=\E[L:dl=\E[M:ic=\E[@:dc=\E[P:\
+        :aw:
+nnansi-mono|NNANSI.SYS mono:\
+	:co#80:li#25:bs:pt:bl=^G:le=^H:do=^J:\
+	:cl=\E[2J:cd=\E[J:ce=\E[K:\
+	:ho=\E[H:cm=\E[%i%d;%dH:\
+	:up=\E[A:do=\E[B:le=\E[C:ri=\E[D:nd=\E[C:\
+        :ti=\E[=7l:te=\E[0m\E[=7h:\
+	:so=\E[1m:se=\E[2m:\
+	:us=\E[4m:ue=\E[24m:\
+	:mb=\E[5m:md=\E[1m:mh=\E[2m:mr=\E[7m:me=\E[m:\
+	:al=\E[L:dl=\E[M:ic=\E[@:dc=\E[P:
+nansi|zansi|N/ZANSI.SYS color:\
+	:co#80:li#25:bs:pt:bl=^G:le=^H:do=^J:\
+	:cl=\E[2J:ce=\E[K:\
+	:ho=\E[H:cm=\E[%i%d;%dH:\
+	:up=\E[A:do=\E[B:le=\E[C:ri=\E[D:nd=\E[C:\
+	:ti=\E[0;44m:te=\E[0m:\
+	:so=\E[1;35;44m:se=\E[0;44m:\
+	:us=\E[1;31;44m:ue=\E[0;44m:\
+	:mb=\E[5m:md=\E[1m:mr=\E[7m:me=\E[0;44m:\
+	:al=\E[L:dl=\E[M:ic=\E[@:dc=\E[P:
+nansi-mono|zansi-mono|N/ZANSI.SYS mono:\
+	:co#80:li#25:bs:pt:bl=^G:le=^H:do=^J:\
+	:cl=\E[2J:ce=\E[K:\
+	:ho=\E[H:cm=\E[%i%d;%dH:\
+	:up=\E[A:do=\E[B:le=\E[C:ri=\E[D:nd=\E[C:\
+	:ti=\E[0m:te=\E[0m:\
+	:so=\E[1;35m:se=\E[0m:\
+	:us=\E[1;31m:ue=\E[0m:\
+	:mb=\E[5m:md=\E[1m:mr=\E[7m:me=\E[m:\
+	:al=\E[L:dl=\E[M:ic=\E[@:dc=\E[P:
+#
+# For really complete ANSI emulations (FANSI-CONSOLE?):
+#
+AX|ANSI X3.64|full ANSI X3.64 (1977) standard:\
+	:co#80:li#24:bs:pt:am:mi:bl=^G:le=^H:\
+	:cl=\E[2J:ce=\E[K:cd=\E[J:\
+	:ho=\E[H:cm=\E[%i%d;%dH:cs=\E[%i%d;%dr:\
+	:up=\E[A:do=\E[B:le=\E[C:ri=\E[D:nd=\E[C:\
+	:UP=\E[%dA:DO=\E[%dB:LE=\E[%dC:RI=\E[%dD:\
+	:so=\E[7m:se=\E[m:us=\E[4m:ue=\E[m:\
+	:mb=\E[5m:md=\E[1m:mr=\E[7m:me=\E[m:as=^N:ae=^O:\
+	:ku=\E[A:kd=\E[B:kl=\E[C:kr=\E[D:kb=^H:\
+	:kn#4:k1=\EOP:k2=\EOQ:k3=\EOR:k4=\EOS:\
+	:im=\E[4h:ei=\E[4l:al=\E[L:dl=\E[M:ic=\E[@:dc=\E[P:sf=\ED:sr=\EM:
+#
+# Display hacker's tool
+#
+debug|debugging entry:\
+	:ae=<ae>:AL=<AL%d>:al=<al>:am:as=<as>:bl=<bl>:bs:bt=<bt>:bw:CC=<CC>:\
+	:cd=<cd>:ce=<ce>:ch=<ch%d>:cl=<cl>:cm=<cm%d,%d>:co#80:cr=<cr>:\
+	:cs=<cs%d,%d>:ct=<ct>:cv=<cv%d>:da:db:DC=<DC%d>:dc=<dc>:DL=<DL%d>:\
+	:dl=<dl>:dm=<dm>:DO=<DO%d>:do=<do>:ds=<ds>:ec=<ec%d>:ed=<ed>:ei=<ei>:\
+	:es:fs=<fs>:ho=<ho>:hs:IC=<IC%d>:ic=<ic>:im=<im>:ip=<ip>:is=<is>:\
+	:it#8:ke=<ke>:LE=<LE%d>:le=<le>:li#24:ll=<ll>:mb=<mb>:md=<md>:me=<me>:\
+	:mh=<mh>:mi:mk=<mk>:mm=<mm>:mo=<mo>:mp=<mp>:mr=<mr>:ms=<ms>:nd=<nd>:\
+	:nw=<nw>:pc=<pc>:pf=<pf>:pO=<pO%d>:po=<po>:ps=<ps>:rc=<rc>:RI=<RI%d>:\
+	:rp=<rp%.%d>:rs=<rs>:sc=<sc>:se=<se>:SF=<SF%d>:sf=<sf>:so=<so>:\
+	:SR=<SR%d>:sr=<sr>:st=<st>:ta=<ta>:te=<te>:ti=<ti>:uc=<uc>:ue=<ue>:\
+	:UP=<UP%d>:up=<up>:us=<us>:vb=<vb>:ve=<ve>:vi=<vi>:vs=<vs>:
+#
+dumb:\
+	:am:bl=^G:co#80:do=^J:nl=^M^J:

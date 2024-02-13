@@ -1,0 +1,20 @@
+;
+; os2mem.imp
+;
++os2mem1.s
+DosAllocMem             doscalls 299 3
+DosFreeMem              doscalls 304 1
+DosQueryMem             doscalls 306 3
+DosSetMem               doscalls 305 3
+
++os2mem2.s
+DosSubAllocMem          doscalls 345 3
+DosSubFreeMem           doscalls 346 3
+DosSubSetMem            doscalls 344 3
+DosSubUnsetMem          doscalls 347 1
+
++os2mem3.s
+DosAllocSharedMem       doscalls 300 4
+DosGetNamedSharedMem    doscalls 301 3
+DosGetSharedMem         doscalls 302 2
+DosGiveSharedMem        doscalls 303 3

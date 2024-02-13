@@ -1,0 +1,56 @@
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= README Release 1 =-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+This distribution contains release 1 of a copy of info and makeinfo programs
+for version 2.14 of the GNU texinfo package which has been modified to run 
+under the emx 32-bit environment under MS-DOS or os/2 2.0 with a number of
+interface enhancements which make life a little easier on the pc.
+
+GNU Make is free software.  See the file COPYING for copying conditions.  
+This program is provided with absolutely NO WARRANTY of any kind.
+
+The info program is used to browse online GNU documentation.  The makeinfo
+program will convert texinfo files (normally denoted by a .texi or .texinfo
+suffice) from GNU source distributions to .info files which can be browsed
+by info.
+
+The "info.inf" and "dir" files should be placed in the /emx/info directory
+which is where the info program will normally look for documentation files.
+The "info.exe" and "makeinfo.exe" programs should be stored in your path;
+I store mine in /emx/bin along with the other emx programs.  Please note 
+also that "info.exe" uses the emx termcap library so to function properly
+you will need to have a properly placed "termcap.dat" file and you should
+also have set TERM environment variable.
+
+To start info type:
+	info
+and press Enter.  The initial display explains how to bring up both the 
+summary help display and start the info tutorial.  The "info.info" manual
+also explains how to add new .info files to the "dir" file.  (Read the pages
+and you'll understand what I'm talking about.)
+
+The makeinfo file, as mentioned perviously, will convert a .texinfo file into
+an info interactive manual.  For instance, if you have just received the
+.texinfo files for gcc, the GNU C compiler, and you are on a FAT based disk
+system, the gcc.texinfo file will have been truncated to gcc.tex.  To create
+the info files for this manual type:
+	makeinfo gcc.tex
+Makeinfo will create a series of files named,
+	gcc.inf
+	gcc.i01
+	gcc.i02
+	gcc.i03, etc.
+Copy these files into the /emx/info directory and now you can start info and
+browse the gcc manual.
+
+I will gladly accept any questions, comments, or insults for poor porting.
+Send email to:
+	gchunt@mail.physics.utah.edu
+Or, to the emx-list mailing list:
+	emx-list@mail.physics.utah.edu
+To subscribe to the emx-list mailing list, send email to:
+	emx-list-request@mail.physics.utah.edu
+
+galen c. hunt
+19/March/92
+
+

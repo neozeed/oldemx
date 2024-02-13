@@ -1,0 +1,27 @@
+varargs.h
+
+strtol: -2147483648 overflows!
+
+utime: 2nd argument == NULL: current time (test!)
+tempnam
+strtoul
+system: shell (DOS)
+int86
+strftime etc.
+spawn* (DOS programs)
+exec* (DOS programs)
+fork
+
+long long
+
+fmod, frexp
+log, etc: return HUGE_VAL, set errno
+sin, cos, tan: check C2
+
+_input (width, [])
+_output: precision = 0 && number == 0 -> no characters
+_output: %diou, precision specified -> ignore 0 flag
+_output: see 387 ref
+fseek: optimize
+ftell (?, text mode)
+stat: directory: time/date, drive number
