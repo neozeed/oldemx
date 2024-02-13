@@ -1,14 +1,26 @@
 / crt0.s (emx/gcc) -- Copyright (c) 1990-1992 by Eberhard Mattes
 
-#define SYSCALL(x) movb $x,%ah;call __syscall
+#define SYSCALL(x) movb $x,%ah;call ___syscall
 
 #define EINVAL 22
 
-        .globl  __data, _errno, _environ, __org_environ
-        .globl  __osmajor, __osminor, __emx_vcmp, __emx_vprt, __emx_env
-        .globl  __text, __exit, __syscall
-        .globl  ___udivsi3, ___divsi3, ___fixdfsi
-        .globl  __heap_base, __heap_end, __heap_brk
+        .globl  _environ
+        .globl  _errno
+        .globl  __data
+        .globl  __emx_env
+        .globl  __emx_vcmp
+        .globl  __emx_vprt
+        .globl  __heap_base
+        .globl  __heap_brk
+        .globl  __heap_end
+        .globl  __org_environ
+        .globl  __osmajor
+        .globl  __osminor
+        .globl  __osmode
+        .globl  __text
+
+        .globl  __exit
+        .globl  ___syscall
 
         .text
 
@@ -18,7 +30,7 @@ __text:
         jmp     __entry1
 
 
-__syscall:
+___syscall:
         call    __dos_syscall
         ret
 
@@ -45,6 +57,8 @@ __entry1:
         xchgb   %al, %ah
         movl    %eax, __emx_vprt
         movb    $0, __emx_vprt+4
+        testl   $0x200, %ebx
+        setne   __osmode
         call    __startup
         call    _main
         addl    $3*4, %esp
@@ -72,41 +86,11 @@ __pt1:  incl    %ecx
 
 __exit: popl    %ecx            / return address
         popl    %eax            / argument
-        SYSCALL(0x4c)
-
-        .align  2
-
-___udivsi3:
-        movl    1*4(%esp), %eax
-        xorl    %edx, %edx
-        divl    2*4(%esp)
-        ret
-
-        .align  2
-
-___divsi3:
-        movl    1*4(%esp), %eax
-        cltd
-        idivl   2*4(%esp)
-        ret
-
-        .align  2
-
-___fixdfsi:
-        pushl   %ebp
-        movl    %esp, %ebp
-        subl    $12, %esp
-        fstcw   -4(%ebp)  
-        movw    -4(%ebp), %ax
-        orw     $0x0c00, %ax            / truncate towards zero
-        movw    %ax, -2(%ebp) 
-        fldcw   -2(%ebp)     
-        fldl    8(%ebp)
-        fistpl  -12(%ebp)    
-        fldcw   -4(%ebp)     
-        movl    -12(%ebp), %eax
-        leave
-        ret
+        cmpl    $255, %eax      / return code > 255?
+        jbe     1f
+        movl    $255, %eax      / yes: use 255
+1:      SYSCALL(0x4c)
+        jmp     __never
 
         .data
 
@@ -128,24 +112,25 @@ __heap_brk:
         .long   0                       / heap brk address
         .long   0                       / heap offset
         .long   __os2dll                / list of OS/2 DLL references
-        .long   0                       / reserved
-        .long   0                       / reserved
+        .long   0                       / stack base address
+        .long   0                       / stack end address
         .long   0                       / reserved
         .long   0                       / reserved
         .long   0                       / reserved
         .byte   0                       / options
         .space  63, 0
 
- / first element of vector (N_SETA|N_EXT == 21)
+/ first element of vector (N_SETA|N_EXT == 21)
 
         .stabs  "__os2dll", 21, 0, 0, 0xffffffff
 
+        .comm   __start_time, 8             / struct _dtd
         .comm   _errno, 4
         .comm   _environ, 4
         .comm   __org_environ, 4
         .comm   __emx_env, 4
         .comm   __emx_vcmp, 4
         .comm   __emx_vprt, 5
-        .comm   __start_time, 8             / struct _dtd
         .comm   __osmajor, 1
         .comm   __osminor, 1
+        .comm   __osmode, 1

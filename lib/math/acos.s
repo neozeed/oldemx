@@ -4,21 +4,21 @@
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
-/ double asin (double x)
+/ double acos (double x)
 
-/ acos(x) = atan (sqrt (1-x*x) / x)
+/ acos(x) = atan2 (sqrt (1-x*x), x)
+
+#define x       4(%esp)
 
 _acos:
-        fldl    4(%esp)                 / x
-        fld     %st
+        fldl    x                       / x
         fld     %st
         fmulp
         fld1
         fsubp
         fsqrt
-        fdivp
-        fld1
+        fldl    x                       / x
         fpatan
         ret

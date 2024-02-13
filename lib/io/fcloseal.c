@@ -9,8 +9,8 @@ int fcloseall (void)
     char ok;
 
     n = 0; ok = 1;
-    for (i = 3; i < _nfile; ++i)              /* keep stdin, stdout, stderr */
-        if (_streams[i].flags & F_INUSE)
+    for (i = 3; i < _nfiles; ++i)             /* keep stdin, stdout, stderr */
+        if (_streams[i].flags & _IOOPEN)
             if (fclose (&_streams[i]) == 0)
                 ++n;
             else

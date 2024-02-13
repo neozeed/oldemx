@@ -1,151 +1,222 @@
 / syscalls.s (emx/gcc) -- Copyright (c) 1990-1992 by Eberhard Mattes
 
-#define SYSCALL(x) movb $x,%ah;call __syscall
+#define SYSCALL(x) movb $x,%ah;call ___syscall
 
 #define EINVAL 22
 
-        .globl  __open, __close, __creat, __ioctl1, __ioctl2
-        .globl  __write, __read, __lseek, __chmod
-        .globl  __remove, __rename, __ftime, __time
-        .globl  __ulimit3, __chdir, __mkdir, __rmdir
-        .globl  __findfirst, __findnext, __uflags, __swchar
-        .globl  _dup, __getcwd, __spawnve, __wait
-        .globl  _sbrk, _umask, _getpid, _signal, _raise, _kill
-        .globl  _ptrace, __unwind, __read_kbd, __alarm, __sleep
-        .globl  _ll_getdrive, __cgets, __memavail, __core
-        .globl  __portaccess, __memaccess
+        .globl  ___alarm
+        .globl  ___cgets
+        .globl  ___chdir
+        .globl  ___chmod
+        .globl  ___chdrive
+        .globl  ___close
+        .globl  ___core
+        .globl  ___creat
+        .globl  ___dup
+        .globl  ___fcntl
+        .globl  ___filetime
+        .globl  ___findfirst
+        .globl  ___findnext
+        .globl  ___fsync
+        .globl  ___ftime
+        .globl  ___ftruncate
+        .globl  ___getcwd
+        .globl  ___getdrive
+        .globl  ___getpid
+        .globl  ___ioctl1
+        .globl  ___ioctl2
+        .globl  ___kill
+        .globl  ___lseek
+        .globl  ___memaccess
+        .globl  ___memavail
+        .globl  ___mkdir
+        .globl  ___open
+        .globl  ___pipe
+        .globl  ___portaccess
+        .globl  ___ptrace
+        .globl  ___raise
+        .globl  ___read
+        .globl  ___read_kbd
+        .globl  ___remove
+        .globl  ___rename
+        .globl  ___rmdir
+        .globl  ___sbrk
+        .globl  ___scrsize
+        .globl  ___signal
+        .globl  ___sleep
+        .globl  ___spawnve
+        .globl  ___swchar
+        .globl  ___uflags
+        .globl  ___ulimit
+        .globl  ___umask
+        .globl  ___unwind
+        .globl  ___write
+        .globl  ___wait
 
 
-/ _open (char *path, int access)
+/ return 0 if carry flag is not set
+/ set errno and return -1 if carry flag is set
 
-__open:
+        .align  2, 0x90
+
+sysret0:jb      1f
+        xorl    %eax, %eax
+        ret
+1:      movl    %eax, _errno
+        movl    $-1, %eax
+        ret
+
+/ return %eax if carry flag is not set
+/ set errno and return -1 if carry flag is set
+
+        .align  2, 0x90
+
+sysreteax:
+        jnb     1f
+        movl    %eax, _errno
+        movl    $-1, %eax
+1:      ret
+
+
+
+/ __open (char *path, int access)
+
+        .align  2, 0x90
+
+___open:
         movb    2*4(%esp), %al          / access
         movl    1*4(%esp), %edx         / path
         SYSCALL(0x3d)
-        jmp     dosreteax
+        jmp     sysreteax
 
 
-/ _creat (char *path, int attr)
+/ __creat (char *path, int attr)
 
-__creat:
+        .align  2, 0x90
+
+___creat:
         movl    2*4(%esp), %ecx         / attr
         movl    1*4(%esp), %edx         / path
         SYSCALL(0x3c)
-        jmp     dosreteax
+        jmp     sysreteax
 
 
-/ _close (int handle)
+/ __close (int handle)
 
-__close:
+        .align  2, 0x90
+
+___close:
         pushl   %ebx
         movl    2*4(%esp), %ebx         / handle
         SYSCALL(0x3e)
         popl    %ebx
-        jmp     dosret0
+        jmp     sysret0
 
 
-/ _write (int handle, void *buf, size_t nbyte)
+/ __write (int handle, void *buf, size_t nbyte)
 
-        .align  2
+        .align  2, 0x90
 
-__write:
+___write:
         pushl   %ebx
         movl    4*4(%esp), %ecx         / nbyte
         movl    3*4(%esp), %edx         / buf
         movl    2*4(%esp), %ebx         / handle
         SYSCALL(0x40)
         popl    %ebx
-dosreteax:
-        jnb     dosreteax1
-        movl    %eax, _errno
-        movl    $-1, %eax
-dosreteax1:
-        ret
+        jmp     sysreteax
 
+/ __read (int handle, void *buf, size_t nbyte)
 
-/ _read (int handle, void *buf, size_t nbyte)
+        .align  2, 0x90
 
-        .align  2
-
-__read:
+___read:
         pushl   %ebx
         movl    4*4(%esp), %ecx         / nbyte
         movl    3*4(%esp), %edx         / buf
         movl    2*4(%esp), %ebx         / handle
         SYSCALL(0x3f)
         popl    %ebx
-        jmp     dosreteax
+        jmp     sysreteax
 
 
-/ _lseek (int handle, long offset, int origin)
+/ __lseek (int handle, long offset, int origin)
 
-        .align  2
+        .align  2, 0x90
 
-__lseek:
+___lseek:
         pushl   %ebx
         movb    4*4(%esp), %al          / origin
         movl    3*4(%esp), %edx         / offset
         movl    2*4(%esp), %ebx         / handle
         SYSCALL(0x42)
         popl    %ebx
-        jmp     dosreteax
+        jmp     sysreteax
 
 
-/ _ioctl1 (int handle, int code)
+/ __ioctl1 (int handle, int code)
 
-__ioctl1:
+        .align  2, 0x90
+
+___ioctl1:
         pushl   %ebx
         movb    3*4(%esp), %al          / code
         movl    2*4(%esp), %ebx         / handle
         SYSCALL(0x44)
         popl    %ebx
-dosretdx:
-        jb      dosretdx1
+        jb      1f
         movzwl  %dx, %eax
         ret
-dosretdx1:
-        movl    %eax, _errno
+
+1:      movl    %eax, _errno
         movl    $-1, %eax
         ret
 
 
-/ int _chmod (char *name, int flag, int attr)
+/ int __chmod (char *name, int flag, int attr)
 
-__chmod:
+        .align  2, 0x90
+
+___chmod:
         movl    1*4(%esp), %edx         / name
         movb    2*4(%esp), %al          / flag
         movl    3*4(%esp), %ecx         / attr
         SYSCALL(0x43)
-        jb      dosretcx1
+        jb      1f
         movzwl  %cx, %eax
         ret
-dosretcx1:
-        movl    %eax, _errno
+1:      movl    %eax, _errno
         movl    $-1, %eax
         ret
 
 
-/ int _remove (const char *name)
+/ int __remove (const char *name)
 
-__remove:
+        .align  2, 0x90
+
+___remove:
         movl    1*4(%esp), %edx         / name
         SYSCALL(0x41)
-        jmp     dosret0
+        jmp     sysret0
 
-/ int _rename (const char *old_name, const char *new_name)
+/ int __rename (const char *old_name, const char *new_name)
 
-__rename:
+        .align  2, 0x90
+
+___rename:
         pushl   %edi
         movl    2*4(%esp), %edx         / old_name
         movl    3*4(%esp), %edi         / new_name
         SYSCALL(0x56)
         popl    %edi
-        jmp     dosret0
+        jmp     sysret0
 
 
-/ int _ftime (int handle, int flag, struct _ftd *date_time)
+/ int __filetime (int handle, int flag, struct _ftd *date_time)
 
-__ftime:
+        .align  2, 0x90
+
+___filetime:
         pushl   %ebx
         movl    4*4(%esp), %ebx         / date_time
         movw    0(%ebx), %cx
@@ -153,145 +224,170 @@ __ftime:
         movb    3*4(%esp), %al          / flag
         movl    2*4(%esp), %ebx         / handle
         SYSCALL(0x57)
-        jnb     ftime1
+        jnb     1f
         movl    %eax, _errno
         movl    $-1, %eax
-        jmp     ftime2
-ftime1: xorl    %eax, %eax
+        jmp     2f
+1:      xorl    %eax, %eax
         movl    4*4(%esp), %ebx         / date_time
         movw    %cx, 0(%ebx)
         movw    %dx, 2(%ebx)
-ftime2: popl    %ebx
+2:      popl    %ebx
         ret
 
 
-/ void _time (struct _dtd *time_date)
+/ void __ftime (struct _dtd *time_date)
 
-__time:
+        .align  2, 0x90
+
+___ftime:
         pushl   %ebx
         movl    2*4(%esp), %ebx
-time1:  SYSCALL(0x2a)                   / Get date
-        movb    %dl, 3(%ebx)            / day
-        movb    %dh, 4(%ebx)            / month
+1:      SYSCALL(0x2a)                   / Get date
+        movb    %dl, 4(%ebx)            / day
+        movb    %dh, 5(%ebx)            / month
         movw    %cx, 6(%ebx)            / year
         SYSCALL(0x2c)                   / Get time
-        movb    %dh, 0(%ebx)            / sec
-        movb    %cl, 1(%ebx)            / min
-        movb    %ch, 2(%ebx)            / hour
+        movb    %dl, 0(%ebx)            / hsec
+        movb    %dh, 1(%ebx)            / sec
+        movb    %cl, 2(%ebx)            / min
+        movb    %ch, 3(%ebx)            / hour
 / Read the date again to avoid a problem at midnight
         SYSCALL(0x2a)                   / Get date
-        cmpb    %dl, 3(%ebx)            / day
-        jne     time1
-        cmpb    %dh, 4(%ebx)            / month
-        jne     time1
+        cmpb    %dl, 4(%ebx)            / day
+        jne     1b
+        cmpb    %dh, 5(%ebx)            / month
+        jne     1b
         cmpw    %cx, 6(%ebx)            / year
-        jne     time1
+        jne     1b
         popl    %ebx
         ret
 
 
-/ int _chdir (const char *name)
+/ int __chdir (const char *name)
 
-__chdir:
+        .align  2, 0x90
+
+___chdir:
         movl    1*4(%esp), %edx
         SYSCALL(0x3b)
-dosret0:jb      dosret1
-        xorl    %eax, %eax
-        ret
-dosret1:movl    %eax, _errno
-        movl    $-1, %eax
-        ret
+        jmp     sysret0
 
+/ int __mkdir (const char *name)
 
-/ int _mkdir (const char *name)
+        .align  2, 0x90
 
-__mkdir:
+___mkdir:
         movl    1*4(%esp), %edx
         SYSCALL(0x39)
-        jmp     dosret0
+        jmp     sysret0
 
 
-/ int _rmdir (const char *name)
+/ int __rmdir (const char *name)
 
-__rmdir:
+        .align  2, 0x90
+
+___rmdir:
         movl    1*4(%esp), %edx
         SYSCALL(0x3a)
-        jmp     dosret0
+        jmp     sysret0
 
 
-/ int dup (int handle)
+/ int __dup (int handle)
 
-_dup:
+        .align  2, 0x90
+
+___dup:
         pushl   %ebx
         movl    2*4(%esp), %ebx         / handle
         SYSCALL(0x45)
         popl    %ebx
-        jmp     dosreteax
+        jmp     sysreteax
 
 
-/ int _getcwd (char *buffer, int drive)
+/ int __getcwd (char *buffer, char drive)
 
-__getcwd:
+        .align  2, 0x90
+
+___getcwd:
         pushl   %esi
         movl    2*4(%esp), %esi         / buffer
         movb    3*4(%esp), %dl          / drive
-        SYSCALL(0x47)
+        cmpb    $0, %dl
+        je      1f
+        subl    $0x40, %dl
+1:      SYSCALL(0x47)
         popl    %esi
-        jmp     dosret0
-        
+        jmp     sysret0
 
-/ int _findfirst (const char *name, int attr, struct _find *fp)
 
-__findfirst:
+/ int __findfirst (const char *name, int attr, struct _find *fp)
+
+        .align  2, 0x90
+
+___findfirst:
         pushl   %esi
         movl    2*4(%esp), %edx
         movl    3*4(%esp), %ecx
         movl    4*4(%esp), %esi
         SYSCALL(0x4e)
         popl    %esi
-        jmp     dosret0
+        jmp     sysret0
 
 
-/ int _findnext (struct _find *fp)
+/ int __findnext (struct _find *fp)
 
-__findnext:
+        .align  2, 0x90
+
+___findnext:
         pushl   %esi
         movl    2*4(%esp), %esi
         SYSCALL(0x4f)
         popl    %esi
-        jmp     dosret0
+        jmp     sysret0
 
 
-/ long _ulimit3 (void)
-/ = ulimit (3, 0)
+/ long __ulimit (int cmd, long new_limit)
 
-__ulimit3:
+        .align  2, 0x90
+
+___ulimit:
         movb    $2, %al
+        movl    1*4(%esp), %ecx         / cmd
+        movl    2*4(%esp), %edx         / new_limit
         SYSCALL(0x7f)
-        ret
+        jecxz   1f
+        movl    %ecx, _errno
+1:      ret
 
 
-/ int umask (int pmode)
+/ int __umask (int pmode)
 
-_umask:
+        .align  2, 0x90
+
+___umask:
         movl    1*4(%esp), %edx         / pmode
         movb    $4, %al                 / umask
         SYSCALL(0x7f)
         ret
 
 
-/ int _uflags (int mask, int new)
+/ int __uflags (int mask, int new)
 
-__uflags:
+        .align  2, 0x90
+
+___uflags:
         movl    1*4(%esp), %ecx         / mask
         movl    2*4(%esp), %edx         / new
         movb    $15, %al                / uflags
         SYSCALL(0x7f)
         ret
 
-/ int _swchar (int flag, int new)
+/ int __swchar (int flag, int new)
 
-__swchar:
+        .align  2, 0x90
+
+___swchar:
         movb    1*4(%esp), %al          / flag
         movb    2*4(%esp), %dl          / new
         SYSCALL(0x37)
@@ -299,28 +395,32 @@ __swchar:
         movb    %dl, %ah
         ret
 
-/ void *sbrk (int incr)
+/ void *__sbrk (int incr)
 
-        .align  2
+        .align  2, 0x90
 
-_sbrk:
+___sbrk:
         movl    1*4(%esp), %edx
         movb    $0, %al
         SYSCALL(0x7f)
         ret
 
 
-/ int getpid (void)
+/ int __getpid (void)
 
-_getpid:
+        .align  2, 0x90
+
+___getpid:
         movb    $5, %al
         SYSCALL(0x7f)
         ret
         
 
-/ int _spawnve (struct _new_proc *np)
+/ int __spawnve (struct _new_proc *np)
 
-__spawnve:
+        .align  2, 0x90
+
+___spawnve:
         movl    1*4(%esp), %edx
         movw    %ds, %cx
         movw    %cx, 12(%edx)           / arg_sel
@@ -334,26 +434,34 @@ __spawnve:
 1:      ret
 
 
-/ int raise (int sig)
+/ int __raise (int sig)
 
-_raise: movl    1*4(%esp), %ecx         / sig
+        .align  2, 0x90
+
+___raise:
+        movl    1*4(%esp), %ecx         / sig
         movb    $14, %al                / raise
         SYSCALL(0x7f)
         ret
 
 
-/ int kill (int pid, int sig)
+/ int __kill (int pid, int sig)
 
-_kill:  movl    1*4(%esp), %edx         / pid
+        .align  2, 0x90
+
+___kill:
+        movl    1*4(%esp), %edx         / pid
         movl    2*4(%esp), %ecx         / sig
         movb    $0x0d, %al              / kill
         SYSCALL(0x7f)
         ret
 
 
-/ void (*signal (int sig, void (*handler)()))(int sig)
+/ void (*__signal (int sig, void (*handler)()))(int sig)
 
-_signal:
+        .align  2, 0x90
+
+___signal:
         movl    1*4(%esp), %ecx         / sig
         movl    2*4(%esp), %edx         / handler
         movb    $0x0c, %al              / signal
@@ -363,16 +471,20 @@ _signal:
         movl    $EINVAL, _errno
 1:      ret
 
-/ void _unwind (void)
+/ void __unwind (void)
 
-__unwind:
-        movb    $0x10, %al              / _unwind
+        .align  2, 0x90
+
+___unwind:
+        movb    $0x10, %al              / unwind
         SYSCALL (0x7f)
         ret
 
-/ int _read_kbd (int echo, int wait, int sig)
+/ int __read_kbd (int echo, int wait, int sig)
 
-__read_kbd:
+        .align  2, 0x90
+
+___read_kbd:
         cmpl    $0, 3*4(%esp)           / sig
         jne     read_kbd_sig
         cmpl    $0, 2*4(%esp)           / wait
@@ -419,9 +531,11 @@ read_kbd_nothing:
         ret
 
 
-/ int ptrace (int request, int pid, int addr, int data)
+/ int __ptrace (int request, int pid, int addr, int data)
 
-_ptrace:
+        .align  2, 0x90
+
+___ptrace:
         pushl   %ebx
         pushl   %edi
         movl    3*4(%esp), %ebx         / request
@@ -437,11 +551,13 @@ _ptrace:
         ret
 
 
-/ int _wait (int *term)
+/ int __wait (int *term)
 /
 / note: do not call with term == NULL!
 
-__wait:
+        .align  2, 0x90
+
+___wait:
         movb    $9, %al
         SYSCALL(0x7f)
         movl    1*4(%esp), %ecx
@@ -449,54 +565,60 @@ __wait:
         ret
 
 
-/ char ll_getdrive (void)
+/ char __getdrive (void)
 
-_ll_getdrive:
+        .align  2, 0x90
+
+___getdrive:
         SYSCALL(0x19)
         addb    $0x41, %al
         movzbl  %al, %eax
         ret
 
 
-/ void _cgets (char *buffer)
+/ void __cgets (char *buffer)
 
-__cgets:
+        .align  2, 0x90
+
+___cgets:
         movl    1*4(%esp), %edx
         SYSCALL(0x0a)
         ret
 
 
-/ int _memavail (void)
+/ int __memavail (void)
 
-        .align  2
+        .align  2, 0x90
 
-__memavail:
+___memavail:
         movb    $0x0b, %al
         SYSCALL(0x7f)
         ret
 
 
-/ int _core (int handle)
+/ int __core (int handle)
 
-        .align  2
+        .align  2, 0x90
 
-__core:
+___core:
         pushl   %ebx
         movl    2*4(%esp), %ebx
         movb    $0x11, %al
         SYSCALL(0x7f)
         popl    %ebx
-        jmp     dosret0
+        jmp     sysret0
 
 
-/ int _ioctl2 (int handle, int request, void *arg)
+/ int __ioctl2 (int handle, int request, void *arg)
 
-__ioctl2:
+        .align  2, 0x90
+
+___ioctl2:
         pushl   %ebx
         movl    2*4(%esp), %ebx         / handle
         movl    3*4(%esp), %ecx         / request
         movl    4*4(%esp), %edx         / arg
-        movb    $0x14, %al              / _ioctl2
+        movb    $0x14, %al              / ioctl2
         SYSCALL(0x7f)
         jecxz   1f
         movl    %ecx, _errno
@@ -504,43 +626,43 @@ __ioctl2:
         ret
 
 
-/ unsigned _alarm (unsigned sec)
+/ unsigned __alarm (unsigned sec)
 
-        .align  2
+        .align  2, 0x90
 
-__alarm:
+___alarm:
         movl    1*4(%esp), %edx
         movb    $0x15, %al
         SYSCALL(0x7f)
         ret
 
 
-/ unsigned _sleep (unsigned sec)
+/ unsigned __sleep (unsigned sec)
 
-        .align  2
+        .align  2, 0x90
 
-__sleep:
+___sleep:
         movl    1*4(%esp), %edx
         movb    $0x17, %al
         SYSCALL(0x7f)
         ret
 
-/ int _portaccess (unsigned first, unsigned last)
+/ int __portaccess (unsigned first, unsigned last)
 
-        .align  2
+        .align  2, 0x90
 
-__portaccess:
+___portaccess:
         movl    1*4(%esp), %ecx         / first
         movl    2*4(%esp), %edx         / last
         movb    $0x12, %al
         SYSCALL (0x7f)
-        jmp     dosret0
+        jmp     sysret0
 
-/ void * _memaccess (unsigned first, unsigned last)
+/ void * __memaccess (unsigned first, unsigned last)
 
-        .align  2
+        .align  2, 0x90
 
-__memaccess:
+___memaccess:
         movl    1*4(%esp), %ecx         / first
         movl    2*4(%esp), %edx         / last
         movb    $0x13, %al
@@ -549,3 +671,85 @@ __memaccess:
         movl    %eax, _errno
         xorl    %eax, %eax              / NULL
 1:      ret
+
+
+/ int __ftruncate (int handle, long length)
+
+        .align  2, 0x90
+
+___ftruncate:
+        pushl   %ebx
+        movl    2*4(%esp), %ebx         / handle
+        movl    3*4(%esp), %edx         / length
+        movb    $0x18, %al
+        SYSCALL(0x7f)
+        popl    %ebx
+        jmp     sysret0
+
+
+/ int __fcntl (int handle, int request, int arg)
+
+        .align  2, 0x90
+
+___fcntl:
+        pushl   %ebx
+        movl    2*4(%esp), %ebx         / handle
+        movl    3*4(%esp), %ecx         / request
+        movl    4*4(%esp), %edx         / arg
+        movb    $0x19, %al              / fcntl
+        SYSCALL(0x7f)
+        jecxz   1f
+        movl    %ecx, _errno
+1:      popl    %ebx
+        ret
+
+
+/ int __chdrive (char drive)
+
+        .align  2, 0x90
+
+___chdrive:
+        movb    1*4(%esp), %dl          / drive
+        subl    $0x41, %dl
+        SYSCALL(0x0E)
+        xorl    %eax, %eax
+        ret
+
+
+/ int __pipe (int *two_handles, int pipe_size)
+
+        .align  2, 0x90
+
+___pipe:
+        movl    1*4(%esp), %edx         / two_handles
+        movl    2*4(%esp), %ecx         / pipe_size
+        movb    $0x1a, %al              / __pipe
+        SYSCALL(0x7f)
+        jecxz   1f
+        movl    %ecx, _errno
+1:      ret
+
+
+/ int __fsync (int handle)
+
+        .align  2, 0x90
+
+___fsync:
+        pushl   %ebx
+        movl    2*4(%esp), %ebx         / handle
+        movb    $0x1b, %al              / __fsync
+        SYSCALL(0x7f)
+        jecxz   1f
+        movl    %ecx, _errno
+1:      popl    %ebx
+        ret
+
+/ void __scrsize (int *dst)
+
+        .align  2, 0x90
+
+___scrsize:
+        movl    1*4(%esp), %edx         / dst
+        movb    $0x1d, %al              / __scrsize
+        SYSCALL(0x7f)
+        ret

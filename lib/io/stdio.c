@@ -4,12 +4,11 @@
 #include <stdio.h>
 #include <fcntl.h>
 
-const int _nfile = _NFILE;
 static char ibuf[BUFSIZ];
 
-struct _stdio _streams[_NFILE] =
+struct _stdio _streams[_NFILES] =
     {
-        {ibuf, ibuf, 0, 0, 0, F_INUSE|_IOREAD|_IOFBF|F_USER_BUF, BUFSIZ, 0, 0},
-        {NULL, NULL, 0, 0, 1, F_INUSE|_IOWRT |_IONBF|F_NO_BUF,   0,      0, 0},
-        {NULL, NULL, 0, 0, 2, F_INUSE|_IOWRT |_IONBF|F_NO_BUF,   0,      0, 0}
+        {ibuf, ibuf, 0, 0, 0, _IOOPEN|_IOREAD|_IOFBF|_IOBUFUSER, BUFSIZ, 0, 0},
+        {NULL, NULL, 0, 0, 1, _IOOPEN|_IOWRT |_IONBF|_IOBUFNONE, 0,      0, 0},
+        {NULL, NULL, 0, 0, 2, _IOOPEN|_IOWRT |_IONBF|_IOBUFNONE, 0,      0, 0}
     };

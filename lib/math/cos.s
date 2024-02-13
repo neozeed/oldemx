@@ -4,11 +4,13 @@
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
 / double cos (double x)
 
+#define x       4(%esp)
+
 _cos:
-        fldl    4(%esp)                 / x
-        fcos
+        fldl    x                       / x
+        fcos                            / cos(x)
         ret

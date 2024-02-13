@@ -6,7 +6,7 @@
 
 int mkdir (const char *name)
     {
-    if (_mkdir (name) == 0)
+    if (__mkdir (name) == 0)
         return (0);
     else
         {

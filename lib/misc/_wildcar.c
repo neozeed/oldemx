@@ -39,7 +39,7 @@ void _wildcard (int *argcp, char ***argvp)
         if (i == 0 || old_argv[i] == NULL
                    || (old_argv[i][-1] & (_ARG_DQUOTE|_ARG_RESPONSE))
                    || strpbrk (old_argv[i], "?*") == NULL
-                   || _findfirst (old_argv[i], 0, &find) != 0)
+                   || __findfirst (old_argv[i], 0, &find) != 0)
             PUT (old_argv[i]);
         else
             {
@@ -57,7 +57,7 @@ void _wildcard (int *argcp, char ***argvp)
                 (void)strlwr (line+1);
                 q = strdup (line);
                 PUT (q+1);
-                } while (_findnext (&find) == 0);
+                } while (__findnext (&find) == 0);
             }
         }
     PUT (NULL); --new_argc;

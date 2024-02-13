@@ -8,8 +8,8 @@ int rmtmp (void)
     int i, n;
 
     n = 0;
-    for (i = 0; i < _nfile; ++i)
-        if ((_streams[i].flags & F_INUSE) && (_streams[i].flags & F_TMP))
+    for (i = 0; i < _nfiles; ++i)
+        if ((_streams[i].flags & _IOOPEN) && (_streams[i].flags & _IOTMP))
             if (fclose (&_streams[i]) == 0)
                 ++n;
     return (n);

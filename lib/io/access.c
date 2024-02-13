@@ -8,14 +8,20 @@ int access (const char *name, int mode)
     {
     int a;
 
-    a = _chmod (name, 0, 0);
+    a = __chmod (name, 0, 0);
     if (a < 0)
         return (-1);
-    if ((a & 0x18) || (mode == 2 && (a & _A_RDONLY)))
+    if (a & _A_SUBDIR)          /* directories always readable and writable */
+        return (0);
+    if (a & _A_VOLID)
+        {
+        errno = ENOENT;
+        return (-1);
+        }
+    if ((mode & 2) && (a & _A_RDONLY))
         {
         errno = EACCES;
         return (-1);
         }
-    else
-        return (0);
+    return (0);
     }

@@ -6,10 +6,10 @@
 
 int close (int handle)
     {
-    if (handle < 0 || handle >= _NFILES)
+    if (handle < 0 || handle >= _nfiles)
         {
         errno = EBADF;
         return (-1);
         }
-    return (_close (handle));
+    return (__close (handle));
     }

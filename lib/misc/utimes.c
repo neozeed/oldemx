@@ -27,10 +27,10 @@ int utime (const char *name, const struct utimbuf *times)
     ftd.sec = tm->tm_sec;
     ftd.min = tm->tm_min;
     ftd.hour = tm->tm_hour;
-    ftd.day = tm->tm_mday = ftd.day;
+    ftd.day = tm->tm_mday;
     ftd.month = tm->tm_mon+1;
     ftd.year = tm->tm_year + 1900 - 1980;
-    if (_ftime (handle, 1, &ftd) < 0)
+    if (__filetime (handle, 1, &ftd) < 0)
         {
         result = -1;
         errno = EACCES;             /* ??? */

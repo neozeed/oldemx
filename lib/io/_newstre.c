@@ -7,8 +7,8 @@ FILE *_newstream (void)
     {
     int i;
 
-    for (i = 0; i < _nfile; ++i)
-        if (!(_streams[i].flags & F_INUSE))
+    for (i = 0; i < _nfiles; ++i)
+        if (!(_streams[i].flags & _IOOPEN))
             {
             /* initialize some fields */
             return (&_streams[i]);

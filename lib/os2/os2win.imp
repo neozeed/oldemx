@@ -1,0 +1,50 @@
+;
+; os2win.imp
+;
++os2win1.s
+WinBeginPaint           pmwin    703 3
+WinCreateMsgQueue       pmwin    716 2
+WinCreateStdWindow      pmwin    908 9
+WinCreateWindow         pmwin    909 13
+WinDefWindowProc        pmwin    911 4
+WinDestroyMsgQueue      pmwin    726 1
+WinDestroyWindow        pmwin    728 1
+WinDispatchMsg          pmwin    912 2
+WinEnableWindow         pmwin    735 2
+WinEndPaint             pmwin    738 1
+WinGetMsg               pmwin    915 5
+WinInitialize           pmwin    763 1
+WinPostMsg              pmwin    919 4
+WinRegisterClass        pmwin    926 5
+WinSendMsg              pmwin    920 4
+WinShowWindow           pmwin    883 2
+WinTerminate            pmwin    888 1
+
++os2win2.s
+WinDrawText             pmwin    913 7
+WinFillRect             pmwin    743 3
+WinGetPS                pmwin    757 1
+WinGetScreenPS          pmwin    759 1
+WinInvalidateRect       pmwin    765 3
+WinIsWindowEnabled      pmwin    773 1
+WinIsWindowVisible      pmwin    775 1
+WinQueryDesktopWindow   pmwin    813 2
+WinQueryActiveWindow    pmwin    799 1
+WinQueryWindow          pmwin    834 2
+WinQueryWindowPos       pmwin    837 2
+WinQueryWindowRect      pmwin    840 2
+WinReleasePS            pmwin    848 1
+WinSetActiveWindow      pmwin    851 2
+WinSetWindowPos         pmwin    875 7
+WinSetWindowText        pmwin    877 2
+WinSubclassWindow       pmwin    929 2
+WinWindowFromID         pmwin    899 2
+
++os2win3.s
+WinOpenWindowDC         pmwin    794 1
+WinQueryWindowDC        pmwin    835 1
+WinWindowFromDC         pmwin    898 1
+
++os2win4.s
+WinLoadMessage          pmwin    779 5
+WinLoadString           pmwin    781 5

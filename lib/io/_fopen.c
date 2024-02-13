@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
+#include <errno.h>
 
 FILE *_fopen (FILE *dst, const char *fname, const char *mode)
     {
@@ -21,10 +22,11 @@ FILE *_fopen (FILE *dst, const char *fname, const char *mode)
             omode = O_WRONLY|O_CREAT|O_TRUNC;
             break;
         case 'a':
-            dst->flags = _IOWRT|O_APPEND;
+            dst->flags = _IOWRT;
             omode = O_WRONLY|O_CREAT|O_APPEND;
             break;
         default:
+            errno = EINVAL;
             return (NULL);
         }
     ++mode; ok = TRUE; bt = FALSE;
@@ -74,7 +76,6 @@ FILE *_fopen (FILE *dst, const char *fname, const char *mode)
     dst->rcount = 0;
     dst->wcount = 0;
     dst->tmpidx = 0;
-    dst->flags |= F_INUSE | F_NO_BUF;
-    dst->flags |= _files[dst->handle] & F_DEV;
+    dst->flags |= _IOOPEN | _IOBUFNONE;
     return (dst);
     }

@@ -6,5 +6,5 @@
 
 int rename (const char *old_name, const char *new_name)
     {
-    return (_rename (old_name, new_name));
+    return (__rename (old_name, new_name));
     }

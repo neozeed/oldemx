@@ -3,7 +3,7 @@
         .globl _setjmp, _longjmp
 
         .text
-        .align  2
+        .align  2, 0x90
 
 #define J_EBX  0
 #define J_ESI  4
@@ -31,7 +31,7 @@ _setjmp:
 / void longjmp (jmp_buf there, int n)
 
 _longjmp:
-        call    __unwind                / unwind signal handlers
+        call    ___unwind               / unwind signal handlers
         movl    1*4(%esp), %edx         / there
         movl    2*4(%esp), %eax         / n
         orl     %eax, %eax

@@ -16,14 +16,14 @@ void _fbuf (FILE *stream)
         {
         stream->buf_size = 1;
         stream->buffer = &stream->char_buf;
-        stream->flags &= ~(_IOFBF|_IOLBF|F_BUF_MASK);
-        stream->flags |= _IONBF|F_CHAR_BUF;
+        stream->flags &= ~(_IOFBF|_IOLBF|_IOBUFMASK);
+        stream->flags |= _IONBF|_IOBUFCHAR;
         }
     else
         {
         stream->buf_size = BUFSIZ;
-        stream->flags &= ~F_BUF_MASK;
-        stream->flags |= F_LIB_BUF;
+        stream->flags &= ~_IOBUFMASK;
+        stream->flags |= _IOBUFLIB;
         }
     stream->ptr = stream->buffer;
     stream->rcount = 0;

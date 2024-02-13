@@ -5,6 +5,7 @@ index.o
 memccpy.o
 memchr.o
 memcmp.o
+memcount.o
 memcpy.o
 memicmp.o
 memmove.o

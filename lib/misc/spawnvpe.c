@@ -2,6 +2,7 @@
 
 #include <sys/emx.h>
 #include <process.h>
+#include <stdlib.h>
 
 int spawnvpe (int mode, const char *name, const char * const *argv, const char * const *envp)
     {

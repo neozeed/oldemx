@@ -5,16 +5,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <io.h>
 #include <errno.h>
+#include <sys/param.h>
 
 #define IDX_LO 10000000
 #define IDX_HI 99999999
 
 static int _tmpidx = IDX_LO;
 
+static int _isdir (char *dst, const char *src);
+
+
 FILE *tmpfile (void)
     {
-    char name[L_tmpnam], *p;
+    char name[L_tmpnam];
     FILE *f;
 
     if (tmpnam (name) == NULL)
@@ -23,7 +28,7 @@ FILE *tmpfile (void)
     if (f == NULL)
         return (NULL);
     f->tmpidx = _tmpidx;
-    f->flags |= F_TMP;
+    f->flags |= _IOTMP;
     return (f);
     }
 
@@ -62,15 +67,28 @@ char *tmpnam (char *string)
     return (string);
     }
 
+/* Create absolute path name from src, copy it to dst and return 1 if
+   it's a directory. Note that this works also with a trailing backslash! */
+
+static int _isdir (char *dst, const char *src)
+    {
+    int attr;
+
+    if (_fullpath (dst, src, MAXPATHLEN) != 0)
+        return (0);
+    attr = __chmod (dst, 0, 0);
+    return (attr >= 0 && (attr & _A_SUBDIR));
+    }
+
 
 char *tempnam (const char *dir, const char *prefix)
     {
     const char *tmpdir;
-    char *tmpname, *p;
-    int attr, saved_errno, idx_start;
+    char *tmpname, *p, buf[MAXPATHLEN];
+    int saved_errno, idx_start;
 
     saved_errno = errno;
-    if (strlen (dir) >= sizeof (tmpdir))
+    if (dir != NULL && strlen (dir) >= sizeof (tmpdir))
         {
         errno = EINVAL;
         return (NULL);
@@ -82,18 +100,10 @@ char *tempnam (const char *dir, const char *prefix)
         }
     tmpdir = NULL;
     p = getenv ("TMP");
-    if (tmpdir == NULL && p != NULL)
-        {
-        attr = _chmod (p, 0, 0);
-        if (attr >= 0 && (attr & _A_SUBDIR))
-            tmpdir = p;
-        }
-    if (tmpdir == NULL && dir != NULL)
-        {
-        attr = _chmod (dir, 0, 0);
-        if (attr >= 0 && (attr & _A_SUBDIR))
-            tmpdir = dir;
-        }
+    if (tmpdir == NULL && p != NULL && _isdir (buf, p))
+        tmpdir = buf;
+    if (tmpdir == NULL && dir != NULL && _isdir (buf, dir))
+        tmpdir = buf;
     if (tmpdir == NULL)
         tmpdir = P_tmpdir;
     tmpname = malloc (strlen (tmpdir) + 1 + L_tmpnam);
@@ -127,5 +137,7 @@ char *tempnam (const char *dir, const char *prefix)
             break;
         }
     errno = saved_errno;
-    return (tmpname);
+    if (_fullpath (buf, tmpname, sizeof (buf)) != 0)
+        return (NULL);
+    return (buf);
     }

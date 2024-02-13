@@ -1,6 +1,6 @@
 /* ctype.c (emx/gcc) -- Copyright (c) 1990-1992 by Eberhard Mattes */
 
-#define __CTYPE_C
+#define _CTYPE_C
 
 #include <ctype.h>
 

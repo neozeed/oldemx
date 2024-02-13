@@ -4,11 +4,13 @@
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
 / double fabs (double x)
 
+#define x       4(%esp)
+
 _fabs:
-        fldl    4(%esp)                 / x
+        fldl    x                       / x
         fabs
         ret

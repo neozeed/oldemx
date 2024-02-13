@@ -9,17 +9,20 @@ int setmode (int handle, int mode)
     {
     int old_mode;
 
-    if (handle < 0 || handle >= _NFILES)
+    if (handle < 0 || handle >= _nfiles)
         {
         errno = EBADF;
         return (-1);
         }
-    if (mode != O_BINARY && mode != O_TEXT)
+    old_mode = ((_files[handle] & O_TEXT) ? O_TEXT : O_BINARY);
+    if (mode == O_BINARY)
+        _files[handle] &= ~O_TEXT;
+    else if (mode == O_TEXT)
+        _files[handle] |= O_TEXT;
+    else
         {
         errno = EINVAL;
         return (-1);
         }
-    old_mode = _files[handle] & (O_BINARY|O_TEXT);
-    _files[handle] = (_files[handle] & ~(O_BINARY|O_TEXT)) | mode;
     return (old_mode);
     }

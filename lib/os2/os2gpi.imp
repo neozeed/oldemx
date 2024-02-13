@@ -1,0 +1,21 @@
+;
+; os2gpi.imp
+;
++os2gpi1.s
+GpiBox                  pmgpi    356 5
+GpiErase                pmgpi    389 1
+GpiLine                 pmgpi    398 2
+GpiMove                 pmgpi    404 2
+GpiPolyLine             pmgpi    415 3
+GpiQueryColor           pmgpi    437 1
+GpiSetColor             pmgpi    517 2
+
++os2gpi2.s
+GpiAssociate            pmgpi    351 2
+GpiCreatePS             pmgpi    369 5
+GpiDestroyPS            pmgpi    379 1
+GpiQueryPS              pmgpi    471 2
+GpiResetPS              pmgpi    498 2
+GpiRestorePS            pmgpi    499 2
+GpiSavePS               pmgpi    501 1
+GpiSetPS                pmgpi    539 3

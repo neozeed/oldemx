@@ -1,0 +1,10 @@
+;
+; os2dll.imp
+;
++os2dll1.s
+DosFreeModule           doscalls  322 1
+DosLoadModule           doscalls  318 4
+DosQueryModuleHandle    doscalls  319 2
+DosQueryModuleName      doscalls  320 3
+DosQueryProcAddr        doscalls  321 4
+DosQueryProcType        doscalls  586 4

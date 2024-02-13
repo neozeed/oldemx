@@ -4,14 +4,16 @@
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
 / double log10 (double x)
+
+#define x       4(%esp)
 
 _log10:
         fldl2t
         fld1
         fdivp
-        fldl    4(%esp)                 / x
+        fldl    x                       / x
         fyl2x
         ret

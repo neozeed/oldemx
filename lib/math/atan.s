@@ -4,12 +4,14 @@
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
 / double atan (double x)
 
+#define x       4(%esp)
+
 _atan:
-        fldl    4(%esp)                 / x
+        fldl    x                       / x
         fld1
         fpatan
         ret

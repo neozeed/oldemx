@@ -3,6 +3,7 @@
 #include <process.h>
 #include <stdlib.h>
 #include <string.h>
+#include <io.h>
 #include <errno.h>
 
 int system (const char *name)

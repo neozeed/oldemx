@@ -4,27 +4,12 @@
 #include <io.h>
 #include <errno.h>
 
-int ftruncate (int handle, int length)
+int ftruncate (int handle, long length)
     {
-    long n;
-
-    if (handle < 0 || handle >= _NFILES || (_files[handle] & F_DEV))
+    if (handle < 0 || handle >= _nfiles || (_files[handle] & F_DEV))
         {
         errno = EBADF;
         return (-1);
         }
-    n = lseek (handle, (long)length, SEEK_SET);
-    if (n < 0)
-        return (-1);
-    if (n != length)
-        {
-        errno = ERANGE;
-        return (-1);
-        }
-    if (_write (handle, "", 0) != 0)
-        {
-        errno = EACCES;
-        return (-1);
-        }
-    return (0);
+    return (__ftruncate (handle, length));
     }

@@ -12,10 +12,11 @@
 
 int read (int handle, void *buf, size_t nbyte)
     {
-    int ret, n, j;
-    char *p, *dst, *src;
+    int ret, n, more;
+    size_t j;
+    char *p, *dst;
 
-    if (handle < 0 || handle >= _NFILES)
+    if (handle < 0 || handle >= _nfiles)
         {
         errno = EBADF;
         return (-1);
@@ -23,29 +24,29 @@ int read (int handle, void *buf, size_t nbyte)
     if (nbyte > 0 && (_files[handle] & F_EOF))
         return (0);
     ret = 0; dst = buf;
+    if (nbyte > 0 && _lookahead[handle] != -1)
+        {
+        *dst++ = (char)_lookahead[handle];
+        _lookahead[handle] = -1;
+        ++ret; --nbyte;
+        }
 redo:
-    n = _read (handle, dst, nbyte);
+    n = __read (handle, dst, nbyte);
     if (n < 0)
         return (-1);
-    if ((_files[handle] & O_TEXT) && !(_files[handle] & _TERMIO) && n > 0)
+    if ((_files[handle] & O_TEXT) && !(_files[handle] & F_TERMIO) && n > 0)
         {
         p = memchr (dst, 0x1a, n);
         if (p != NULL)
             {
-            n = p-dst;
+            n = p - dst;
             _files[handle] |= F_EOF;
             }
-        src = dst;
-        while ((p = memchr (src, '\r', n)) != NULL)
+        more = _crlf (dst, n, &j);
+        ret += j; nbyte -= j; dst += j;
+        if (more)
             {
-            j = p-src;
-            if (dst != src) memcpy (dst, src, j);
-            src += j+1; n -= j+1; dst += j; ret += j; nbyte -= j;
-            }
-        if (n > 0)
-            {
-            if (dst != src) memcpy (dst, src, n);
-            dst += n; ret += n; nbyte -= n;
+            /* ... */
             }
         if (ret == 0 && nbyte > 0 && !(_files[handle] & F_EOF))
             goto redo;

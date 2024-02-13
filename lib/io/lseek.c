@@ -8,7 +8,7 @@ long lseek (int handle, long offset, int origin)
     {
     long n, cur;
 
-    if (handle < 0 || handle >= _NFILES)
+    if (handle < 0 || handle >= _nfiles)
         {
         errno = EBADF;
         return (-1L);
@@ -21,21 +21,21 @@ long lseek (int handle, long offset, int origin)
             errno = EINVAL;
             return (-1L);
             }
-        cur = (long)_lseek (handle, 0L, SEEK_CUR);
+        cur = (long)__lseek (handle, 0L, SEEK_CUR);
         if (cur < 0)
             {
             errno = EBADF;
             return (-1L);
             }
-        n = (long)_lseek (handle, 0L, origin);
+        n = (long)__lseek (handle, 0L, origin);
         if (n + offset < 0)
             {
-            _lseek (handle, cur, SEEK_SET);
+            (void)__lseek (handle, cur, SEEK_SET);
             errno = EINVAL;
             return (-1L);
             }
         }
-    n = (long)_lseek (handle, offset, origin);
+    n = (long)__lseek (handle, offset, origin);
     if (n < 0)
         {
         errno = EBADF;

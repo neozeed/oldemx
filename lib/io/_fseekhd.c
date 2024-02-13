@@ -19,24 +19,25 @@ int _fseek_hdr (FILE *stream)
         unsigned short hdr_loc_lo;      /* cannot use long, alignment! */
         unsigned short hdr_loc_hi;
         } patch;
-    int i;
+    long original_pos;
 
-    (void)fseek (stream, 0, SEEK_SET);
+    original_pos = ftell (stream);
     if (fread (&exe_hdr, sizeof (exe_hdr), 1, stream) != 1)
         goto failure;
     if (memcmp (exe_hdr.magic, "MZ", 2) != 0)
-        return (fseek (stream, 0, SEEK_SET) == -1 ? -1 : 0);
-    if (fseek (stream, 16 * exe_hdr.hdr_size, SEEK_SET) == -1)
+        return (fseek (stream, original_pos, SEEK_SET) == -1 ? -1 : 0);
+    if (fseek (stream, original_pos + 16 * exe_hdr.hdr_size, SEEK_SET) == -1)
         goto failure;
     if (fread (&patch, sizeof (patch), 1, stream) != 1)
         goto failure;
     if (memcmp (patch.sig, "emx", 3) != 0)
         goto failure;
-    if (fseek (stream, patch.hdr_loc_lo + 65536 * patch.hdr_loc_hi, SEEK_SET) == -1)
+    if (fseek (stream, original_pos + patch.hdr_loc_lo
+                                + 65536L * patch.hdr_loc_hi, SEEK_SET) == -1)
         goto failure;
     return (0);
 
 failure:
-    (void)fseek (stream, 0, SEEK_SET);
+    (void)fseek (stream, original_pos, SEEK_SET);
     return (-1);
     }

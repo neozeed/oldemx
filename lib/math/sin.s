@@ -4,11 +4,13 @@
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
 / double sin (double x)
 
+#define x       4(%esp)
+
 _sin:
-        fldl    4(%esp)                 / x
-        fsin
+        fldl    x                       / x
+        fsin                            / sin(x)
         ret

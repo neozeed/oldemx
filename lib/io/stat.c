@@ -1,19 +1,18 @@
 /* stat.c (emx/gcc) -- Copyright (c) 1990-1992 by Eberhard Mattes */
 
+#include <sys/emx.h>
 #include <io.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
-/* Bug: doesn't handle directories */
-
 int stat (const char *name, struct stat *buffer)
     {
     static int stat_ino = 0x100000;
     int handle, result, attr;
 
-    attr = _chmod (name, 0, 0);             /* Get attributes */
+    attr = __chmod (name, 0, 0);            /* Get attributes */
     if (attr == -1)
         {
         errno = ENOENT;

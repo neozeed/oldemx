@@ -47,9 +47,8 @@ int putenv (const char *string)
             }
         environ[env_size+0] = (char *)string;
         environ[env_size+1] = NULL;
-        return (0);
         }
     else
         *p = (char *)string;
-    return (-1);
+    return (0);
     }

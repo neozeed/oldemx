@@ -11,7 +11,7 @@ int wait (int *term)
 
     if (term == NULL)
         term = &dummy;
-    rc = _wait (term);
+    rc = __wait (term);
     if (rc == -1)
         errno = ECHILD;
     return (rc);

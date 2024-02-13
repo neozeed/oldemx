@@ -1,10 +1,7 @@
 / pow.s (emx/gcc) -- Copyright (c) 1991-1992 by Kolja Elsaesser
+/                    Modified 1992 by Eberhard Mattes
 
         .data
-
-        .comm pow_cw1, 2
-        .comm pow_cw2, 2
-        .comm int_exponent, 8
 
 cmp_zero:
         .double 0d0.00000000000000000000e+000
@@ -13,32 +10,41 @@ cmp_zero:
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
-/ double pow (double x,double y)
+/ double pow (double x, double y)
 
-_pow:
-        fstcww  pow_cw1
-        movw    pow_cw1, %ax            / wait inserted by gas
+#define cw1           -8(%ebp)
+#define cw2           -6(%ebp)
+#define int_exponent  -4(%ebp)
+/define saved_ebp      0(%ebp)
+/define ret_addr       4(%ebp)
+#define x              8(%ebp)
+#define y             16(%ebp)
+
+_pow:   pushl   %ebp
+        movl    %esp, %ebp
+        subl    $8, %esp
+        pushf                           / Save flags
+        fstcww  cw1
+        movw    cw1, %ax                / wait inserted by gas
         andw    $0xf3ff, %ax            / round nearest zero
-        movw    %ax, pow_cw2
-        fldl    12(%esp)                / y
-        fldl    4(%esp)                 / x
+        movw    %ax, cw2
+        fldl    y
+        fldl    x
         fcoml   cmp_zero
         fnstsww %ax
-        pushf
         sahf
         jz      zero
         jc      negative
 
 positive:
-        popf
         fyl2x                           / y * ln(x)
         fld     %st
-        fldcww  pow_cw2
+        fldcww  cw2
         frndint
-        fldcww  pow_cw1
-        fsubr   %st,%st(1)
+        fldcww  cw1
+        fsubr   %st, %st(1)
         fxch    %st(1)
         f2xm1
         fld1
@@ -47,8 +53,9 @@ positive:
         fxch    %st(1)
         ffree   %st
         fincstp
-        ret
+        jmp     return
 
+        .align  2, 0x90
 zero:
         fldl    %st(1)
         fcompl  cmp_zero
@@ -56,38 +63,37 @@ zero:
         sahf
         jz      positive        / 0^0           -> NAN
         jc      positive        / 0^negative    -> NAN
-        popf
         ffree   %st
         fincstp
         ffree   %st
         fincstp
         fldz
-        ret
+        jmp     return
 
+        .align  2, 0x90
 negative:
         fld     %st(1)
-        fldcww  pow_cw2
+        fldcww  cw2
         frndint
 / Copy integral part of exponent to memory
         fld     %st
         fistpll int_exponent
-        fldcww  pow_cw1
-        fsub    %st(2),%st
+        fldcww  cw1
+        fsub    %st(2), %st
         fcompl  cmp_zero
         fstsww  %ax
         sahf
 / Non-integral exponent -> error
         jnz     positive
 / Integral exponent -> special case
-        popf
 / Compute x^y where x is positive
         fchs
         fyl2x                           / y * ln(x)
         fld     %st
-        fldcww  pow_cw2
+        fldcww  cw2
         frndint
-        fldcww  pow_cw1
-        fsubr   %st,%st(1)
+        fldcww  cw1
+        fsubr   %st, %st(1)
         fxch    %st(1)
         f2xm1
         fld1
@@ -97,9 +103,11 @@ negative:
         ffree   %st
         fincstp
 / Correction for odd exponent and negative base
-        movl    int_exponent,%eax
-        testl   $0x1, %eax
+        testl   $1, int_exponent
         jz      even_exp
         fchs
+        .align  4, 0x90
 even_exp:
+return: popf
+        leave
         ret

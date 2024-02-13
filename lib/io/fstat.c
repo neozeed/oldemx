@@ -14,12 +14,12 @@ int fstat (int handle, struct stat *buffer)
     struct _ftd ftd;
     struct tm tm;
 
-    if (handle < 0 || handle >= _NFILES)
+    if (handle < 0 || handle >= _nfiles)
         {
         errno = EBADF;
         return (-1);
         }
-    i = _ioctl1 (handle, 0);
+    i = __ioctl1 (handle, 0);
     if (i < 0)
         {
         errno = EBADF;
@@ -48,10 +48,10 @@ int fstat (int handle, struct stat *buffer)
         {
         long cur;
 
-        cur = _lseek (handle, 0L, SEEK_CUR);
-        buffer->st_size = _lseek (handle, 0L, SEEK_END);
-        _lseek (handle, cur, SEEK_SET);
-        if (_ftime (handle, 0, &ftd) < 0)
+        cur = __lseek (handle, 0L, SEEK_CUR);
+        buffer->st_size = __lseek (handle, 0L, SEEK_END);
+        __lseek (handle, cur, SEEK_SET);
+        if (__filetime (handle, 0, &ftd) < 0)
             buffer->st_atime = 0;
         else
             {

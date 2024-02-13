@@ -6,7 +6,7 @@
 
 int chdir (const char *name)
     {
-    if (_chdir (name) == 0)
+    if (__chdir (name) == 0)
         return (0);
     else
         {

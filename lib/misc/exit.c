@@ -1,6 +1,6 @@
 /* exit.c (emx/gcc) -- Copyright (c) 1990-1992 by Eberhard Mattes */
 
-#define __EXIT
+#define _EXIT_C
 
 #include <sys/emx.h>
 #include <stdlib.h>
@@ -12,9 +12,8 @@ void volatile exit (int ret)
     {
     int i;
 
-    flushall ();
-    rmtmp ();
     for (i = _atexit_n-1; i >= 0; --i)
         _atexit_v[i]();
+    _cleanup ();
     _exit (ret);
     }

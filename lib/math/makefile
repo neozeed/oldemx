@@ -3,7 +3,7 @@
 #
 GAS=as
 GCPP=cpp
-GCC=gcc -O -I/emx/include -DUSE_FLOATING_POINT
+GCC=gcc -O -I/emx/include -DUSE_FLOATING_POINT -Wall
 AR=ar
 I=/emx/include/
 E=$(I)sys/emx.h
@@ -16,12 +16,12 @@ LIBC=../libc.a
 	$(GCC) -c $*.c
 
 .s.o:
-	$(GCPP) -P $< | $(GAS) -o $@
+	$(GCPP) -P -$$ $< | $(GAS) -o $@
 
 default:    $(LIBC)
 
 clean:
-        del *.o
+	-del *.o
 
 sin.o: sin.s
 cos.o: cos.s
@@ -51,7 +51,7 @@ $(LIBC): sin.o cos.o tan.o atan.o atan2.o asin.o acos.o \
          sqrt.o exp.o log.o log10.o fabs.o ceil.o floor.o \
          modf.o ldexp.o pow.o _fixunsd.o _fxam.o \
     math.mod
-        upda math.mod math.res $(LIBC)
-        -$(AR) dv $(LIBC) __.SYMDEF
-        $(AR) rv $(LIBC) @math.res
-        $(AR) sv $(LIBC)
+	upda math.mod math.res $(LIBC)
+	-$(AR) dv $(LIBC) __.SYMDEF
+	$(AR) rv $(LIBC) @math.res
+	$(AR) sv $(LIBC)

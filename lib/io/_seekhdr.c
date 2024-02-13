@@ -19,24 +19,25 @@ int _seek_hdr (int handle)
         unsigned short hdr_loc_lo;      /* cannot use long, alignment! */
         unsigned short hdr_loc_hi;
         } patch;
-    int i;
+    long original_pos;
 
-    (void)lseek (handle, 0, SEEK_SET);
+    original_pos = tell (handle);
     if (read (handle, &exe_hdr, sizeof (exe_hdr)) != sizeof (exe_hdr))
         goto failure;
     if (memcmp (exe_hdr.magic, "MZ", 2) != 0)
-        return (lseek (handle, 0, SEEK_SET) == -1 ? -1 : 0);
-    if (lseek (handle, 16 * exe_hdr.hdr_size, SEEK_SET) == -1)
+        return (lseek (handle, original_pos, SEEK_SET) == -1 ? -1 : 0);
+    if (lseek (handle, original_pos + 16 * exe_hdr.hdr_size, SEEK_SET) == -1)
         goto failure;
     if (read (handle, &patch, sizeof (patch)) != sizeof (patch))
         goto failure;
     if (memcmp (patch.sig, "emx", 3) != 0)
         goto failure;
-    if (lseek (handle, patch.hdr_loc_lo + 65536 * patch.hdr_loc_hi, SEEK_SET) == -1)
+    if (lseek (handle, original_pos + patch.hdr_loc_lo
+                                + 65536L * patch.hdr_loc_hi, SEEK_SET) == -1)
         goto failure;
     return (0);
 
 failure:
-    (void)lseek (handle, 0, SEEK_SET);
+    (void)lseek (handle, original_pos, SEEK_SET);
     return (-1);
     }

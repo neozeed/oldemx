@@ -10,6 +10,6 @@ long filelength (int handle)
     if (cur < 0)
         return (cur);
     n = lseek (handle, 0L, SEEK_END);
-    lseek (handle, cur, SEEK_SET);
+    (void)lseek (handle, cur, SEEK_SET);
     return (n);
     }

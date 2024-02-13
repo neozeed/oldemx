@@ -5,5 +5,5 @@
 
 unsigned alarm (unsigned sec)
     {
-    return (_alarm (sec));
+    return (__alarm (sec));
     }

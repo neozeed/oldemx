@@ -6,25 +6,25 @@
 
 int setvbuf (FILE *stream, char *buffer, int mode, size_t size)
     {
-    if (!(stream->flags & F_INUSE) ||
+    if (!(stream->flags & _IOOPEN) ||
             (mode != _IONBF && mode != _IOFBF && mode != _IOLBF) ||
             (mode != _IONBF && size <= 0))
         return (EOF);
-    fflush (stream);
-    if ((stream->flags & F_BUF_MASK) == F_LIB_BUF)
+    (void)fflush (stream);
+    if ((stream->flags & _IOBUFMASK) == _IOBUFLIB)
         free (stream->buffer);
-    stream->flags &= ~(F_BUF_MASK|_IOLBF|_IOFBF|_IONBF);
+    stream->flags &= ~(_IOBUFMASK|_IOLBF|_IOFBF|_IONBF);
     if (mode == _IONBF)
         {
         stream->buf_size = 1;
         stream->buffer = &stream->char_buf;
-        stream->flags |= _IONBF|F_CHAR_BUF;
+        stream->flags |= _IONBF|_IOBUFCHAR;
         }
     else if (buffer != NULL)
         {
         stream->buf_size = size;
         stream->buffer = buffer;
-        stream->flags |= mode|F_USER_BUF;
+        stream->flags |= mode|_IOBUFUSER;
         }
     else
         {
@@ -33,7 +33,7 @@ int setvbuf (FILE *stream, char *buffer, int mode, size_t size)
             return (EOF);
         stream->buf_size = size;
         stream->buffer = buffer;
-        stream->flags |= mode|F_LIB_BUF;
+        stream->flags |= mode|_IOBUFLIB;
         }
     stream->ptr = stream->buffer;
     stream->rcount = 0;

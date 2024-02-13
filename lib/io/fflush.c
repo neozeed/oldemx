@@ -31,6 +31,6 @@ int fflush (FILE *stream)
     stream->ptr = stream->buffer;
     stream->rcount = 0;
     stream->wcount = 0;
-    stream->flags &= ~F_REREAD;     /* Undo ungetc */
+    stream->flags &= ~_IOREREAD;    /* Undo ungetc */
     return (result);
     }

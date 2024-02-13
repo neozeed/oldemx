@@ -9,6 +9,7 @@ int sscanf (const char *buffer, const char *format, ...)
     {
     va_list arg_ptr;
     struct _stdio trick;
+    int result;
 
     va_start (arg_ptr, format);
     trick.buffer = (char *)buffer;              /* const -> non-const */
@@ -16,7 +17,9 @@ int sscanf (const char *buffer, const char *format, ...)
     trick.rcount = strlen (buffer);
     trick.wcount = 0;
     trick.handle = -1;
-    trick.flags = F_STRING|F_USER_BUF|_IOREAD;
+    trick.flags = _IOOPEN|_IOSTRING|_IOBUFUSER|_IOREAD;
     trick.buf_size = INT_MAX;
-    return (_input (&trick, format, arg_ptr));
+    result = _input (&trick, format, arg_ptr);
+    va_end (arg_ptr);
+    return (result);
     }

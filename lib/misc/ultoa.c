@@ -6,7 +6,6 @@ char *ultoa (unsigned long value, char *string, int radix)
     {
     char *dst;
     char digits[32];
-    unsigned long x;
     int i, n;
   
     dst = string;

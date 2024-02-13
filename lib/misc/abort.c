@@ -1,15 +1,15 @@
 /* abort.c (emx/gcc) -- Copyright (c) 1990-1992 by Eberhard Mattes */
 
-#include <io.h>
+#include <sys/emx.h>
 #include <stdlib.h>
-#include <string.h>
-/* #include <signal.h> */
+#include <signal.h>
 
-void abort (void)
+static sig_atomic_t abort_flag = 0;
+
+void volatile abort (void)
     {
-    const char *msg = "Abnormal program termination\n";
-
-    write (1, msg, strlen (msg));
-    /* raise (SIGABRT); */
-    _exit (3);
+    if (abort_flag++ == 0)
+        _cleanup ();
+    (void)raise (SIGABRT);
+    _exit (3);                                    /* Should not get reached */
     }

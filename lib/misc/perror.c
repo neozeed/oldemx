@@ -7,12 +7,12 @@ void perror (const char *string)
     {
     if (string != NULL && *string != 0)
         {
-        fputs (string, stderr);
-        fputs (": ", stderr);
+        (void)fputs (string, stderr);
+        (void)fputs (": ", stderr);
         }
     if (errno < 0 || errno > sys_nerr)
-        fputs (sys_errlist[sys_nerr], stderr);
+        (void)fputs (sys_errlist[sys_nerr], stderr);
     else
-        fputs (sys_errlist[errno], stderr);
+        (void)fputs (sys_errlist[errno], stderr);
     fputc ('\n', stderr);
     }

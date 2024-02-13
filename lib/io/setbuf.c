@@ -2,22 +2,23 @@
 
 #include <sys/emx.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 void setbuf (FILE *stream, char *buffer)
     {
     fflush (stream);
-    if ((stream->flags & F_BUF_MASK) == F_LIB_BUF)
+    if ((stream->flags & _IOBUFMASK) == _IOBUFLIB)
         free (stream->buffer);
-    stream->flags &= ~(F_BUF_MASK|_IONBF|_IOLBF|_IOFBF);
+    stream->flags &= ~(_IOBUFMASK|_IONBF|_IOLBF|_IOFBF);
     if (buffer == NULL)
         {
-        stream->flags |= _IONBF|F_CHAR_BUF;
+        stream->flags |= _IONBF|_IOBUFCHAR;
         stream->buf_size = 1;
         stream->buffer = &stream->char_buf;
         }
     else
         {
-        stream->flags |= _IOFBF|F_USER_BUF;
+        stream->flags |= _IOFBF|_IOBUFUSER;
         stream->buf_size = BUFSIZ;
         stream->buffer = buffer;
         }

@@ -5,5 +5,5 @@
 
 unsigned sleep (unsigned sec)
     {
-    return (_sleep (sec));
+    return (__sleep (sec));
     }

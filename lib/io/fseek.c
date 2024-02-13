@@ -11,7 +11,7 @@ int fseek (FILE *stream, long offset, int origin)
     {
     long pos;
 
-    if (!(stream->flags & F_INUSE) || origin < 0 || origin > 2)
+    if (!(stream->flags & _IOOPEN) || origin < 0 || origin > 2)
         {
         errno = EINVAL;
         return (EOF);

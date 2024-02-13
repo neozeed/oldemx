@@ -1,0 +1,13 @@
+;
+; os2xcpt.imp
+;
++os2xcpt1.s
+DosAcknowledgeSignalException   doscalls 418 1
+DosEnterMustComplete            doscalls 380 1
+DosExitMustComplete             doscalls 381 1
+DosRaiseException               doscalls 356 1
+DosSendSignalException          doscalls 379 2
+DosSetExceptionHandler          doscalls 354 1
+DosSetSignalExceptionFocus      doscalls 378 2
+DosUnsetExceptionHandler        doscalls 355 1
+DosUnwindException              doscalls 357 3

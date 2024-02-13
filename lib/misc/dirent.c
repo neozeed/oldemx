@@ -94,10 +94,11 @@ DIR *opendir (const char *name)
     }
 
 
-void closedir (DIR *dirp)
+int closedir (DIR *dirp)
     {
     free_dircontents (dirp->dd_contents);
     free (dirp);
+    return (0);
     }
 
 
@@ -121,9 +122,9 @@ static char *getdirent (char *dir)
     int rc;
 
     if (dir != NULL)
-        rc = _findfirst (dir, A_DIR|A_HIDDEN, &find);
+        rc = __findfirst (dir, A_DIR|A_HIDDEN, &find);
     else
-        rc = _findnext (&find);
+        rc = __findnext (&find);
     if (rc == 0)
         {
         (void)strlwr (find.name);

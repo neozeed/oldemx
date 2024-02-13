@@ -6,9 +6,9 @@
 
 int ungetc (int c, FILE *stream)
     {
-    if (!(stream->flags & F_INUSE) || c == EOF)
+    if (!(stream->flags & _IOOPEN) || c == EOF)
         return (EOF);
-    if (stream->flags & F_STRING)
+    if (stream->flags & _IOSTRING)
         {
         /* ungetc on a string is used only by scanf, and this does an */
         /* ungetc of the recently read character, so we don't have to */
@@ -39,6 +39,6 @@ int ungetc (int c, FILE *stream)
         }
     ++stream->rcount;
     stream->flags &= ~_IOEOF;
-    stream->flags |= F_REREAD;          /* for fseek */
+    stream->flags |= _IOREREAD;         /* for fseek */
     return ((unsigned char)c);
     }

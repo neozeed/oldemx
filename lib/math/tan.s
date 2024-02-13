@@ -4,12 +4,14 @@
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
 / double tan (double x)
 
+#define x       4(%esp)
+
 _tan:
-        fldl    4(%esp)                 / x
+        fldl    x                       / x
         fptan
         fdivrp
         ret

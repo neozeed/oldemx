@@ -3,7 +3,7 @@
 #include <io.h>
 #include <fcntl.h>
 
-int truncate (char *name, int length)
+int truncate (char *name, long length)
     {
     int handle, result;
 
@@ -11,6 +11,6 @@ int truncate (char *name, int length)
     if (handle < 0)
         return (-1);
     result = ftruncate (handle, length);
-    close (handle);
+    (void)close (handle);
     return (result);
     }

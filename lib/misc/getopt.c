@@ -1,6 +1,6 @@
 /* getopt.c (emx/gcc) -- Copyright (c) 1990-1992 by Eberhard Mattes */
 
-#define __GETOPT_C
+#define _GETOPT_C
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,8 +24,13 @@ static char ** non_options;        /* List of entries which are not options */
 static int options_count;
 static int non_options_count;
 
-#define PUT(dst) if (optmode == GETOPT_ANY) \
-                    dst[dst##_count++] = argv[optind]; else ;
+#define BEGIN do {
+#define END   } while (0)
+
+#define PUT(dst) BEGIN \
+                  if (optmode == GETOPT_ANY) \
+                    dst[dst##_count++] = argv[optind]; \
+                 END
 
 int getopt (int argc, char **argv, const char *opt_str)
     {

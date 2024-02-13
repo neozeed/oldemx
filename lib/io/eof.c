@@ -4,9 +4,13 @@
 
 int eof (int handle)
     {
-    long cur;
+    long cur, len;
 
-    cur = fseek (handle, 0L, SEEK_CUR);
-    if (cur < 0) return (-1L);
-    return (cur == filelength (handle) ? 1 : 0);
+    cur = tell (handle);
+    if (cur < 0)
+        return (-1);
+    len = filelength (handle);
+    if (len < 0)
+        return (-1);
+    return (cur == len);
     }

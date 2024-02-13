@@ -4,12 +4,14 @@
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
 / int fxam (double x)
 
+#define x       4(%esp)
+
 __fxam:
-        fldl    4(%esp)                 / x
+        fldl    x                       / x
         fxam
         fstsww  %ax
         ffree   %st(0)

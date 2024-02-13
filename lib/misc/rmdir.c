@@ -6,7 +6,7 @@
 
 int rmdir (const char *name)
     {
-    if (_rmdir (name) == 0)
+    if (__rmdir (name) == 0)
         return (0);
     else
         {

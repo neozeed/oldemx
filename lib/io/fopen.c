@@ -9,5 +9,6 @@ FILE *fopen (const char *fname, const char *mode)
 
     f = _newstream ();
     if (f != NULL)
-        return (_fopen (f, fname, mode));
+        f = _fopen (f, fname, mode);
+    return (f);
     }

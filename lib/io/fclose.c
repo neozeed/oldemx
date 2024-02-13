@@ -3,6 +3,7 @@
 #include <sys/emx.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <io.h>
 
 int fclose (FILE *stream)
     {
@@ -10,18 +11,19 @@ int fclose (FILE *stream)
     char buf[32];
 
     result = EOF;
-    if ((stream->flags & F_INUSE) && !(stream->flags & F_STRING))
+    if ((stream->flags & _IOOPEN) && !(stream->flags & _IOSTRING))
         {
+        result = 0;
         result = fflush (stream);
         if (close (fileno (stream)) < 0)
             result = EOF;
-        if (result == 0 && (stream->flags & F_TMP))
+        if (result == 0 && (stream->flags & _IOTMP))
             {
-            itoa (stream->tmpidx, buf, 10);
+            (void)itoa (stream->tmpidx, buf, 10);
             if (remove (buf) != 0)
                 result = EOF;
             }
-        if ((stream->flags & F_BUF_MASK) == F_LIB_BUF)
+        if ((stream->flags & _IOBUFMASK) == _IOBUFLIB)
             free (stream->buffer);
         }
     stream->flags = 0;

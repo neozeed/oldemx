@@ -17,9 +17,10 @@ int sprintf (char *buffer, const char *format, ...)
     trick.rcount = 0;
     trick.wcount = INT_MAX;
     trick.handle = -1;
-    trick.flags = F_STRING|F_USER_BUF|_IOWRT;
+    trick.flags = _IOOPEN|_IOSTRING|_IOBUFUSER|_IOWRT;
     trick.buf_size = INT_MAX;
     result = _output (&trick, format, arg_ptr);
-    putc (0, &trick);
+    (void)putc (0, &trick);
+    va_end (arg_ptr);
     return (result);
     }

@@ -3,17 +3,42 @@
 ;
 +os2file1.s
 DosClose                doscalls 257 1
+DosDupHandle            doscalls 260 2
 DosOpen                 doscalls 273 8
 DosRead                 doscalls 281 4
+DosResetBuffer          doscalls 254 1
+DosSetFilePtr           doscalls 256 4
 DosWrite                doscalls 282 4
 
 +os2file2.s
-DosQueryFileInfo        doscalls 279 4
 DosCopy                 doscalls 258 3
 DosCreatePipe           doscalls 239 3
 DosDelete               doscalls 259 1
+DosEditName             doscalls 261 5
 DosMove                 doscalls 271 2
 
 +os2file3.s
 DosCreateDir            doscalls 270 2
 DosDeleteDir            doscalls 226 1
+DosSetCurrentDir        doscalls 255 1
+DosSetDefaultDisk       doscalls 220 1
+
++os2file4.s
+DosFindClose            doscalls 263 1
+DosFindFirst            doscalls 264 7
+DosFindNext             doscalls 266 4
+DosQueryCurrentDisk     doscalls 275 2
+DosQueryFHState         doscalls 276 2
+DosQueryFileInfo        doscalls 279 4
+DosQueryFSAttach        doscalls 277 5
+DosQueryHType           doscalls 224 3
+DosQueryPathInfo        doscalls 223 4
+
++os2file5.s
+DosSetFHState           doscalls 221 2
+DosSetFileInfo          doscalls 218 4
+DosSetFileSize          doscalls 272 2
+DosSetMaxFH             doscalls 209 1
+DosSetRelMaxFH          doscalls 382 2
+DosSetPathInfo          doscalls 219 5
+DosShutdown             doscalls 415 1

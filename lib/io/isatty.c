@@ -6,7 +6,7 @@
 
 int isatty (int handle)
     {
-    if (handle < 0 || handle >= _NFILES)
+    if (handle < 0 || handle >= _nfiles)
         {
         errno = EBADF;
         return (0);

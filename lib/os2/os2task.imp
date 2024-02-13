@@ -1,0 +1,27 @@
+;
+; os2task.imp
+;
++os2task1.s
+DosBeep                 doscalls 286 2
+DosCreateThread         doscalls 311 5
+DosEnterCritSec         doscalls 232 0
+DosExecPgm              doscalls 283 7
+DosExit                 doscalls 234 2
+DosExitCritSec          doscalls 233 0
+DosExitList             doscalls 296 2
+DosGetInfoBlocks        doscalls 312 2
+DosKillProcess          doscalls 235 2
+DosKillThread           doscalls 111 1
+DosResumeThread         doscalls 237 1
+DosSetPriority          doscalls 236 4
+DosSleep                doscalls 229 1
+DosSuspendThread        doscalls 238 1
+DosWaitChild            doscalls 280 5
+DosWaitThread           doscalls 349 2
+
++os2task2.s
+DosQueryAppType         doscalls 323 2
+DosSelectSession        sesmgr    38 1
+DosSetSession           sesmgr    39 2
+DosStartSession         sesmgr    37 3
+DosStopSession          sesmgr    40 2

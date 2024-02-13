@@ -1,0 +1,28 @@
+;
+; os2pipe.imp
+;
+; Named pipes and queues
+;
++os2pipe1.s
+DosCallNPipe            doscalls 240 7
+DosConnectNPipe         doscalls 241 1
+DosCreateNPipe          doscalls 243 7
+DosDisConnectNPipe      doscalls 242 1
+DosPeekNPipe            doscalls 244 6
+DosQueryNPHState        doscalls 245 2
+DosQueryNPipeInfo       doscalls 248 4
+DosQueryNPipeSemState   doscalls 249 3
+DosSetNPHState          doscalls 250 2
+DosSetNPipeSem          doscalls 251 3
+DosTransactNPipe        doscalls 252 6
+DosWaitNPipe            doscalls 253 2
+
++os2pipe2.s
+DosCloseQueue           quecalls  11 1
+DosCreateQueue          quecalls  16 3
+DosOpenQueue            quecalls  15 3
+DosPeekQueue            quecalls  13 8
+DosPurgeQueue           quecalls  10 1
+DosQueryQueue           quecalls  12 2
+DosReadQueue            quecalls   9 8
+DosWriteQueue           quecalls  14 5

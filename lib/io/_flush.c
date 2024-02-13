@@ -11,7 +11,7 @@ int _flush (int c, FILE *stream)
     int n, w, fh;
     char ch;
 
-    if (!(stream->flags & F_INUSE) || (stream->flags & F_STRING))
+    if (!(stream->flags & _IOOPEN) || (stream->flags & _IOSTRING))
         {
         errno = EACCES;
         return (EOF);
@@ -37,8 +37,8 @@ int _flush (int c, FILE *stream)
         else                        /* New or flushed buffer */
             {
             w = 0;
-            if (stream->flags & O_APPEND)
-                lseek (fh, 0L, SEEK_END);
+            if (fh >= 0 && fh < _nfiles && (_files[fh] & O_APPEND))
+                (void)lseek (fh, 0L, SEEK_END);
             }
         stream->ptr = stream->buffer;
         *stream->ptr++ = (char)c;

@@ -6,5 +6,5 @@
 
 int remove (const char *name)
     {
-    return (_remove (name));
+    return (__remove (name));
     }

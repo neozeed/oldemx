@@ -1,0 +1,6 @@
+;
+; os2err.imp
+;
++os2err1.s
+DosErrClass             doscalls 211 4
+DosError                doscalls 212 1

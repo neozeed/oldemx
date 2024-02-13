@@ -13,5 +13,6 @@ int fprintf (FILE *stream, const char *format, ...)
     _tmpbuf (stream);
     result = _output (stream, format, arg_ptr);
     _endbuf (stream);
+    va_end (arg_ptr);
     return (result);
     }

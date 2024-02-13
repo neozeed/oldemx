@@ -4,14 +4,16 @@
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
 / double asin (double x)
 
 / asin(x) = atan (x / sqrt (1-x*x))
 
+#define x       4(%esp)
+
 _asin:
-        fldl    4(%esp)                 / x
+        fldl    x                       / x
         fld     %st
         fld     %st
         fmulp

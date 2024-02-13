@@ -6,7 +6,7 @@
 #include <io.h>
 #include <errno.h>
 
-/* Bug: doesn't check for compatible modes (O_MODE_MASK) */
+/* Bug: doesn't check for compatible modes (O_ACCMODE) */
 
 FILE *fdopen (int handle, const char *mode)
     {
@@ -14,7 +14,7 @@ FILE *fdopen (int handle, const char *mode)
     FILE *dst;
     int omode;
 
-    if (handle < 0 || handle >= _NFILES)
+    if (handle < 0 || handle >= _nfiles)
         {
         errno = EBADF;
         return (NULL);
@@ -29,7 +29,7 @@ FILE *fdopen (int handle, const char *mode)
             dst->flags = _IOWRT;
             break;
         case 'a':
-            dst->flags = _IOWRT|O_APPEND;
+            dst->flags = _IOWRT;
             break;
         default:
             return (NULL);
@@ -78,7 +78,6 @@ FILE *fdopen (int handle, const char *mode)
     dst->buffer = NULL;
     dst->rcount = 0;
     dst->wcount = 0;
-    dst->flags |= F_INUSE | F_NO_BUF;
-    dst->flags |= _files[handle] & F_DEV;
+    dst->flags |= _IOOPEN | _IOBUFNONE;
     return (dst);
     }

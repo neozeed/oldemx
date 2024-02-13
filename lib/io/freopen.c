@@ -5,7 +5,7 @@
 
 FILE *freopen (const char *fname, const char *mode, FILE *stream)
     {
-    if (stream->flags & F_INUSE)
+    if (stream->flags & _IOOPEN)
         if (fclose (stream) != 0)
             return (NULL);
     return (_fopen (stream, fname, mode));

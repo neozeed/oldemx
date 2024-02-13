@@ -12,11 +12,14 @@
 #define MAX_MANT  309       /* extended format isn't used */
 #define DEFAULT_PREC 6
 
-#define PUTC(c) do { \
+#define BEGIN do {
+#define END } while (0)
+
+#define PUTC(c) BEGIN \
                    if (putc (c, stream) == EOF) \
                         return (-1); \
                    ++count; \
-                   } while (0)
+                END
 
 #ifdef USE_FLOATING_POINT
 static void conv_real (char *dst, double x, int prec, int fixed, int force_dp,
@@ -27,7 +30,7 @@ static void conv_real (char *dst, double x, int prec, int fixed, int force_dp,
 int _output (FILE *stream, const char *format, char *arg_ptr)
     {
     char just, sign, blank, hash, size, upper, number, integer, pad, cont, fix;
-    char *s, *q, tmp[64], prefix[8], *pfx_ptr, *pfx_start, tbuf[40];
+    char *s, tmp[64], prefix[8], *pfx_ptr, *pfx_start, tbuf[40];
     int width, prec, count, *ptr, n, i, pn, zn, sn, tzn, neg;
 #ifdef USE_FLOATING_POINT
     double dn;
@@ -40,6 +43,7 @@ int _output (FILE *stream, const char *format, char *arg_ptr)
         if (*format != '%' || format[1] == '%')
             {
             PUTC (*format);
+            if (*format == '%') ++format;
             ++format;
             }
         else
@@ -97,7 +101,7 @@ int _output (FILE *stream, const char *format, char *arg_ptr)
                 }
             if (*format == 'h' || *format == 'l' || *format == 'L')
                 size = *format++;
-            s = NULL; number = TRUE; integer = TRUE;
+            s = NULL; number = TRUE; integer = TRUE; sn = 0;
             pfx_ptr = pfx_start = prefix+1;
             tbuf[0] = 0;
             switch (*format)
@@ -255,9 +259,14 @@ fmt_e:
                 }
             if (s != NULL)
                 {
-                if (number && sn > 0 && *s != '-')
+                if (number && sn > 0)
                     {
-                    if (sign)
+                    if (*s == '-')
+                        {
+                        ++s; --sn;
+                        *--pfx_start = '-';
+                        }
+                    else if (sign)
                         *--pfx_start = '+';
                     else if (blank)
                         *--pfx_start = ' ';
@@ -266,12 +275,16 @@ fmt_e:
                 if (number && integer && prec > 0)
                     {
                     zn = prec - sn;
-                    if (sn > 0 && *s == '-') ++zn;
                     if (zn < 0) zn = 0;
                     }
                 pn = pfx_ptr - pfx_start;
                 if (tzn < 0) tzn = 0;
                 n = pn + zn + sn + tzn + strlen (tbuf);
+                if (number && pad == '0' && n < width && !just)
+                    {
+                    zn += width - n;
+                    n = width;
+                    }
                 if (n < width && !just)
                     for (i = n; i < width; ++i)
                         PUTC (pad);

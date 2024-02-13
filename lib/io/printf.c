@@ -13,5 +13,6 @@ int printf (const char *format, ...)
     _tmpbuf (stdout);
     result = _output (stdout, format, arg_ptr);
     _endbuf (stdout);
+    va_end (arg_ptr);
     return (result);
     }

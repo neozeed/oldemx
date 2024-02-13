@@ -2,9 +2,9 @@
 
         .globl _memchr
 
-/ void *memchr (const void *s, int c, int n)
+/ void *memchr (const void *s, int c, size_t n)
 /     {
-/     int i;
+/     size_t i;
 /     const char *p;
 /
 /     p = s;
@@ -17,23 +17,21 @@
 / assumes ds=es!
 
         .text
-        .align  2
+        .align  2, 0x90
 
 _memchr:
         pushl   %edi
         movl    2*4(%esp), %edi         / s
         movb    3*4(%esp), %al          / c
         movl    4*4(%esp), %ecx         / n
-        jecxz   not_found
-        cld
+        jecxz   1f                      / not found
         repne
         scasb
-        jne     not_found
+        jne     1f                      / not found
         lea     -1(%edi), %eax
         popl    %edi
         ret
 
-not_found:
-        xorl    %eax, %eax              / return (NULL)
+1:      xorl    %eax, %eax              / return (NULL)
         popl    %edi
         ret

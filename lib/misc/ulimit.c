@@ -1,5 +1,6 @@
 /* ulimit.c (emx/gcc) -- Copyright (c) 1990-1992 by Eberhard Mattes */
 
+#include <sys/emx.h>
 #include <stdlib.h>
 #include <errno.h>
 
@@ -10,8 +11,6 @@
 
 long ulimit (int cmd, long newlimit)
     {
-    long n;
-
     switch (cmd)
         {
         case UL_GFILLIM:
@@ -19,9 +18,9 @@ long ulimit (int cmd, long newlimit)
         case UL_SFILLIM:
             return (newlimit);
         case UL_GMEMLIM:
-            return (_ulimit3 ());
+            return (__ulimit (cmd, newlimit));
         case UL_NOFILES:
-            return (20);
+            return (40);
         default:
             errno = EINVAL;
             return (-1);

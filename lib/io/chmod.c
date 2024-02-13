@@ -8,14 +8,16 @@
 
 int chmod (const char *name, int pmode)
     {
-    int attr;
+    int attr, rc;
 
-    attr = _chmod (name, 0, 0);            /* Get attributes */
+    attr = __chmod (name, 0, 0);           /* Get attributes */
     if (attr < 0)
         return (-1);
     if (pmode & S_IWRITE)
         attr &= ~1;
     else
         attr |= 1;
-    return (_chmod (name, 1, attr));
+    rc = __chmod (name, 1, attr);
+    if (rc >= 0) rc = 0;
+    return (rc);
     }

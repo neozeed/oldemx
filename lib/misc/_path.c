@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <io.h>
 #include <errno.h>
 
 int _path (char *dst, const char *name)

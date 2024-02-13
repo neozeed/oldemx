@@ -4,13 +4,16 @@
 
         .text
 
-        .align  2
+        .align  2, 0x90
 
 / double ldexp (double x, int exp)
 
+#define x        4(%esp)
+#define exp     12(%esp)
+
 _ldexp:
-        fildl   12(%esp)                / exp
-        fldl    4(%esp)                 / x
+        fildl   exp                     / exp
+        fldl    x                       / x
         fscale
         fstp    %st(1)
         ret

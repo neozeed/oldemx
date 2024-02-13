@@ -2,6 +2,7 @@
 
 #include <sys/emx.h>
 #include <stdio.h>
+#include <io.h>
 
 /* Bug: incorrect result with text mode */
 /* Bug: does not work with rw files(?) */
@@ -9,7 +10,6 @@
 long ftell (FILE *stream)
     {
     long pos;
-    char *p;
 
     pos = lseek (stream->handle, 0L, SEEK_CUR);
     if (pos < 0)

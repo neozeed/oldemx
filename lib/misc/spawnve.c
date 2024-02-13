@@ -50,6 +50,6 @@ int spawnve (int mode, const char *name, const char * const *argv,
         memcpy (d, *p, i+1);
         d += i+1;
         }
-    i = _spawnve (&np);
+    i = __spawnve (&np);
     return (i);
     }

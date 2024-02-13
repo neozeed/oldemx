@@ -3,9 +3,10 @@
 #include <string.h>
 #include <ctype.h>
 
-int memicmp (const void *s1, const void *s2, int n)
+int memicmp (const void *s1, const void *s2, size_t n)
     {
-    int i, d;
+    size_t i;
+    int d;
     
     for (i = 0; i < n; ++i)
         {

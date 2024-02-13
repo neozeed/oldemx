@@ -1,0 +1,5 @@
+;
+; os2info.imp
+;
++os2info1.s
+DosQuerySysInfo         doscalls 348 4

@@ -68,6 +68,7 @@ int _input (FILE *stream, const char *format, char *arg_ptr)
         else
             {
             assign = TRUE; width = INT_MAX;
+            char_ptr = NULL;
             ++format;
             if (*format == '*')
                 {
@@ -286,14 +287,15 @@ string:
                 case 'u':
                 case 'o':
                 case 'x':
+                case 'X':
                     do  {
                         NEXT (c);
                         } while (WHITE (c));
                     switch (f)
                         {
-                        case 'o': radix = 8; break;
-                        case 'x': radix = 16; break;
-                        default: radix = 10; break;
+                        case 'o':           radix = 8; break;
+                        case 'x': case 'X': radix = 16; break;
+                        default:            radix = 10; break;
                         }
 scan_complete_number:
                     neg = FALSE;

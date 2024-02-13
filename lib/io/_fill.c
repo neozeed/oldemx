@@ -8,7 +8,7 @@
 
 int _fill (FILE *stream)
     {
-    if (!(stream->flags & F_INUSE) || (stream->flags & F_STRING))
+    if (!(stream->flags & _IOOPEN) || (stream->flags & _IOSTRING))
         {
         errno = EACCES;
         return (EOF);
@@ -21,7 +21,7 @@ int _fill (FILE *stream)
         }
     stream->flags |= _IOREAD;          /* Switch to read mode */
     stream->wcount = 0;
-    stream->flags &= ~F_REREAD;        /* Buffer empty, no reread required */
+    stream->flags &= ~_IOREREAD;       /* Buffer empty, no reread required */
     if (nbuf (stream))
         _fbuf (stream);
     else

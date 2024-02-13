@@ -7,7 +7,10 @@
 int fscanf (FILE *stream, const char *format, ...)
     {
     va_list arg_ptr;
+    int result;
 
     va_start (arg_ptr, format);
-    return (_input (stream, format, arg_ptr));
+    result = _input (stream, format, arg_ptr);
+    va_end (arg_ptr);
+    return (result);
     }
