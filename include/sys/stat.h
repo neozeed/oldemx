@@ -1,5 +1,8 @@
 /* sys/stat.h (emx/gcc) */
 
+#if !defined (_SYS_STAT_H)
+#define _SYS_STAT_H
+
 #if !defined (_TIME_T_DEFINED)
 #define _TIME_T_DEFINED
 typedef long time_t;
@@ -36,3 +39,5 @@ struct stat
 
 int fstat (int handle, struct stat *buffer);
 int stat (const char *name, struct stat *buffer);
+
+#endif /* !defined (SYS_STAT_H) */

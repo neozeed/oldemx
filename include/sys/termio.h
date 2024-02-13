@@ -1,15 +1,17 @@
 /* sys/termio.h (emx/gcc) */
 
-#if !defined (__TERMIO_H)
-
-#define __TERMIO_H
+#if !defined (_SYS_TERMIO_H)
+#define _SYS_TERMIO_H
 
 /* request codes */
 
+#if !defined (TCGETA)
 #define TCGETA      1
 #define TCSETA      2
 #define TCSETAW     3
 #define TCSETAF     4
+#define TCFLSH      5
+#endif
 
 /* c_cc indexes */
 
@@ -39,7 +41,7 @@
 #define IXON        0x0400
 #define IXANY       0x0800
 #define IXOFF       0x1000
-#define IDEFAULT    0x8000
+#define IDELETE     0x8000  /* emx */
 
 /* c_oflag, emx ignores all of the following bits */
 
@@ -116,6 +118,7 @@
 #define ECHOK       0x0020
 #define ECHONL      0x0040
 #define NOFLSH      0x0080
+#define IDEFAULT    0x8000  /* emx */
 
 
 struct termio
@@ -128,4 +131,4 @@ struct termio
     unsigned char c_cc[NCC];
     };
 
-#endif
+#endif /* !defined (_SYS_TERMIO_H) */

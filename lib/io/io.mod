@@ -4,6 +4,7 @@ clearerr.o
 close.o
 creat.o
 dup.o
+dup2.o
 eof.o
 fclose.o
 fcloseal.o
@@ -48,6 +49,7 @@ rename.o
 rewind.o
 rmtmp.o
 scanf.o
+select.o
 setbuf.o
 setbuffe.o
 setmode.o

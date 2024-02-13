@@ -18,4 +18,4 @@ struct ar_hdr
     char ar_fmag[2];
     };
 
-#endif
+#endif /* !defined (_AR_H) */

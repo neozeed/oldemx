@@ -3,25 +3,38 @@
 #include <io.h>
 #include <string.h>
 
+/* Do CR/LF -> LF conversion in the buffer BUF containing SIZE characters. */
+/* Store the number of resulting characters to *NEW_SIZE. This value does  */
+/* not include the final CR, if present. If the buffer ends with CR, 1 is  */
+/* returned, 0 otherwise.                                                  */
+
 int _crlf (char *buf, size_t size, size_t *new_size)
     {
-    size_t n, j, ret;
-    char *p, *dst, *src;
+    size_t src, dst;
+    char *p;
 
-    src = buf; dst = buf; n = size; ret = 0;
-    while ((p = memchr (src, '\r', n)) != NULL)
+    p = memchr (buf, '\r', size);       /* Avoid copying until CR reached */
+    if (p == NULL)                      /* This is the trivial case */
         {
-        j = p - src;
-        if (dst != src)
-            (void)memmove (dst, src, j);
-        src += j+1; n -= j+1; dst += j; ret += j;
+        *new_size = size;
+        return (0);
         }
-    if (n > 0)
+    src = dst = p - buf;                /* Start copying here */
+    while (src < size)
         {
-        if (dst != src)
-            (void)memmove (dst, src, n);
-        ret += n;
+        if (buf[src] == '\r')           /* CR? */
+            {
+            ++src;                      /* Skip the CR */
+            if (src >= size)            /* Is it the final char? */
+                {
+                *new_size = dst;        /* Yes -> don't include in new_size, */
+                return (1);             /*        notify caller              */
+                }
+            if (buf[src] != '\n')       /* CR not followed by LF? */
+                --src;                  /* Yes -> copy the CR */
+            }
+        buf[dst++] = buf[src++];        /* Copy a character */
         }
-    *new_size = ret;
+    *new_size = dst;
     return (0);
     }

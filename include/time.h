@@ -1,8 +1,11 @@
 /* time.h (emx/gcc) */
 
-#if !defined (_SIZE_T)
-#define _SIZE_T
-typedef unsigned int size_t;
+#if !defined (_TIME_H)
+#define _TIME_H
+
+#if !defined (_SIZE_T_DEFINED)
+#define _SIZE_T_DEFINED
+typedef unsigned long size_t;
 #endif
 
 #if !defined (NULL)
@@ -28,7 +31,7 @@ struct tm
     int tm_hour;    /* 0..23 */
     int tm_mday;    /* 1..31 */
     int tm_mon;     /* 0..11 */
-    int tm_year;    /* 0(:=1990).. */
+    int tm_year;    /* 0(:=1900).. */
     int tm_wday;    /* 0..6 */
     int tm_yday;    /* 0..365 */
     int tm_isdst;   /* 0 */
@@ -37,6 +40,9 @@ struct tm
 
 #if !defined (CLOCKS_PER_SEC)
 #define CLOCKS_PER_SEC 100
+#endif
+
+#if !defined (CLK_TCK)
 #define CLK_TCK 100
 #endif
 
@@ -50,3 +56,5 @@ time_t mktime (struct tm *t);
 size_t strftime (char *string, size_t size, const char *format,
                  const struct tm *t);
 time_t time (time_t *t);
+
+#endif /* !defined (_TIME_H) */

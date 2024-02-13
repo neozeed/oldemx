@@ -5,13 +5,13 @@
 
 typedef long ptrdiff_t;
 
-#if !defined (_SIZE_T)
-#define _SIZE_T
-typedef unsigned int size_t;
+#if !defined (_SIZE_T_DEFINED)
+#define _SIZE_T_DEFINED
+typedef unsigned long size_t;
 #endif
 
 #if !defined (NULL)
 #define NULL ((void *)0)
 #endif
 
-#endif
+#endif /* !defined (_STDDEF_H) */

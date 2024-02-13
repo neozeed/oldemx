@@ -1,8 +1,7 @@
 /* user.h (emx/gcc) */
 
-#if !defined (__USER_H)
-
-#define __USER_H
+#if !defined (_SYS_USER_H)
+#define _SYS_USER_H
 
 #define UMAGIC 0x10f
 
@@ -35,4 +34,4 @@ struct user
     unsigned long u_regs[19];
     };
 
-#endif
+#endif /* !defined (_SYS_USER_H) */

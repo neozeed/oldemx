@@ -1,10 +1,9 @@
 /* getopt (emx/gcc) */
 
-#if !defined (__GETOPT)
+#if !defined (_GETOPT_H)
+#define _GETOPT_H
 
-#define __GETOPT
-
-#if !defined (__GETOPT_C)
+#if !defined (_GETOPT_C)
 
 extern char *optarg;       /* argument of current option                    */
 extern int optind;         /* index of next argument; default=0: initialize */
@@ -23,4 +22,4 @@ extern enum _optmode
 
 int getopt (int argc, char **argv, const char *opt_str);
 
-#endif
+#endif /* !defined (_GETOPT_H) */

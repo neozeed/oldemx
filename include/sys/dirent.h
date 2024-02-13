@@ -1,15 +1,14 @@
 /* sys/dirent.h (emx/gcc) */
 
 #if !defined (_SYS_DIRENT_H)
-
 #define _SYS_DIRENT_H
 
 #if !defined (MAXNAMLEN)
-#define MAXNAMLEN  65
+#define MAXNAMLEN  260
 #endif
 
 #if !defined (MAXPATHLEN)
-#define MAXPATHLEN 65
+#define MAXPATHLEN 260
 #endif
 
 #if !defined (A_RONLY)
@@ -34,4 +33,4 @@ struct dirent
     unsigned short d_date;          /* DOS file modification date */
     };
 
-#endif
+#endif /* !defined (SYS_DIRENT_H) */

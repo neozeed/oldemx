@@ -88,11 +88,6 @@ char *tempnam (const char *dir, const char *prefix)
     int saved_errno, idx_start;
 
     saved_errno = errno;
-    if (dir != NULL && strlen (dir) >= sizeof (tmpdir))
-        {
-        errno = EINVAL;
-        return (NULL);
-        }
     if (strlen (prefix) > 5)
         {
         errno = EINVAL;

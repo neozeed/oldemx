@@ -1,8 +1,7 @@
 /* sys/reg.h (emx/gcc) */
 
-#if !defined (__REG_H)
-
-#define __REG_H
+#if !defined (_SYS_REG_H)
+#define _SYS_REG_H
 
 #define GS      0
 #define FS      1
@@ -23,6 +22,6 @@
 #define EFL    16
 #define UESP   17
 #define SS     18
-#define FP387  19   /* Floating point register starting here */
+#define FP387  19   /* Floating point registers starting here */
 
-#endif
+#endif /* !defined (_SYS_REG_H) */

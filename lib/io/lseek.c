@@ -13,6 +13,8 @@ long lseek (int handle, long offset, int origin)
         errno = EBADF;
         return (-1L);
         }
+    if (origin == SEEK_CUR && _lookahead[handle] >= 0)
+        --offset;
     if (offset < 0)
         {
         /* DOS doesn't return an error for seek before beginning of file */
@@ -22,11 +24,8 @@ long lseek (int handle, long offset, int origin)
             return (-1L);
             }
         cur = (long)__lseek (handle, 0L, SEEK_CUR);
-        if (cur < 0)
-            {
-            errno = EBADF;
+        if (cur == -1L)
             return (-1L);
-            }
         n = (long)__lseek (handle, 0L, origin);
         if (n + offset < 0)
             {
@@ -36,14 +35,12 @@ long lseek (int handle, long offset, int origin)
             }
         }
     n = (long)__lseek (handle, offset, origin);
-    if (n < 0)
-        {
-        errno = EBADF;
+    if (n == -1L)
         return (-1L);
-        }
     else
         {
         _files[handle] &= ~F_EOF;       /* Clear Ctrl-Z flag */
+        _lookahead[handle] = -1;        /* Clear lookahead */
         return (n);
         }
     }

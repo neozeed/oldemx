@@ -10,6 +10,7 @@ struct tms
     time_t tms_cutime;
     time_t tms_cstime;
     };
-#endif
 
 long times (struct tms *buffer);
+
+#endif /* !defined (_SYS_TIMES_H) */

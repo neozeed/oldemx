@@ -1,9 +1,9 @@
 /* ctype.h (emx/gcc) */
 
-#if !defined (__CTYPE_H)
-#define __CTYPE_H
+#if !defined (_CTYPE_H)
+#define _CTYPE_H
 
-#if !defined (__CTYPE_C)
+#if !defined (_CTYPE_C)
 extern unsigned char _ctype[];
 #endif
 
@@ -31,11 +31,11 @@ extern unsigned char _ctype[];
 #define isascii(c) ((unsigned)(c) <= 0x7f)
 #define toascii(c) ((c) & 0x7f)
 
-#if !defined (__CTYPE_C)
+#if !defined (_CTYPE_C)
 static __inline__ int _toupper (int c) { return (c-'a'+'A'); }
 static __inline__ int _tolower (int c) { return (c-'A'+'a'); }
 static __inline__ int toupper(int c) {return (islower(c) ? _toupper(c) : c);}
 static __inline__ int tolower(int c) {return (isupper(c) ? _tolower(c) : c);}
 #endif
 
-#endif
+#endif /* !defined (_CTYPE_H) */

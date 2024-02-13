@@ -1,14 +1,14 @@
 /* sys/dir.h (emx/gcc) */
 
-#if !defined (_DIR_H)
-#define _DIR_H
+#if !defined (_SYS_DIR_H)
+#define _SYS_DIR_H
 
 #if !defined (MAXNAMLEN)
-#define MAXNAMLEN  65
+#define MAXNAMLEN  260
 #endif
 
 #if !defined (MAXPATHLEN)
-#define MAXPATHLEN 65
+#define MAXPATHLEN 260
 #endif
 
 #if !defined (A_RONLY)
@@ -57,7 +57,7 @@ DIR *opendir (const char *name);
 struct direct *readdir (DIR *dirp);
 void seekdir (DIR *dirp, long off);
 long telldir (DIR *dirp);
-void closedir (DIR *dirp);
+int closedir (DIR *dirp);
 void rewinddir (DIR *dirp);
 
-#endif
+#endif /* !defined (SYS_DIR_H) */

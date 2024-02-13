@@ -1,5 +1,8 @@
 /* limits.h (emx/gcc) */
 
+#if !defined (_LIMITS_H)
+#define _LIMITS_H
+
 #define CHAR_BIT      8
 #define SCHAR_MIN   (-128)
 #define SCHAR_MAX     127
@@ -21,3 +24,5 @@
 #define INT_MIN       LONG_MIN
 #define INT_MAX       LONG_MAX
 #define UINT_MAX      ULONG_MAX
+
+#endif /* !defined (_LIMITS_H) */

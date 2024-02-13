@@ -1,8 +1,11 @@
 /* stdlib.h (emx/gcc) */
 
-#if !defined (_SIZE_T)
-#define _SIZE_T
-typedef unsigned int size_t;
+#if !defined (_STDLIB_H)
+#define _STDLIB_H
+
+#if !defined (_SIZE_T_DEFINED)
+#define _SIZE_T_DEFINED
+typedef unsigned long size_t;
 #endif
 
 #if !defined (NULL)
@@ -46,6 +49,11 @@ typedef struct _ldiv_t
 #define EXIT_FAILURE 1
 #endif
 
+#if !defined (OS2_MODE)
+#define DOS_MODE 0
+#define OS2_MODE 1
+#endif
+
 extern int errno;
 
 extern char **environ;
@@ -57,9 +65,10 @@ extern const unsigned int _emx_vcmp;
 extern const unsigned int _emx_env;
 extern const unsigned char _osminor;
 extern const unsigned char _osmajor;
+extern const unsigned char _osmode;
 extern const char _emx_vprt[5];
 
-void abort (void);
+void volatile abort (void);
 unsigned alarm (unsigned sec);
 int atexit (void (*func)(void));
 int atoi (const char *string);
@@ -97,21 +106,39 @@ int system (const char *command);
 long ulimit (int cmd, long newlimit);
 char *ultoa (unsigned long value, char *string, int radix);
 
+int _abspath (char *dst, const char *src, int size);
+int _chdir2 (const char *name);
+int _chdrive (char drive);
 int _core (int handle);
 void _defext (char *dst, const char *ext);
 void volatile _exit (int ret);
 void *_expand (void *mem, size_t new_size);
+char _fngetdrive (const char *src);
+int _fullpath (char *dst, const char *src, int size);
+int _getcwd1 (char *buffer, char drive);
+char *_getcwd2 (char *buffer, int size);
+char _getdrive (void);
 int _heapchk (void);
 int _heapset (unsigned fill);
 size_t _msize (const void *mem);
 int _path (char *dst, const char *name);
 int _read_kbd (int echo, int wait, int sig);
 void _response (int *argcp, char ***argvp);
+void _scrsize (int *dst);
 void _searchenv (const char *file, const char *var, char *path);
+char _swchar (void);
+int _syserrno (void);
 void _wildcard (int *argcp, char ***argvp);
 
 #if !defined (__ABS)                                     /* see also math.h */
 #define __ABS
+#if !defined (__GNUC__) || __GNUC__ >= 2
+extern int abs (int n);
+extern long labs (long n);
+#else
 static __inline__ int abs (int n) { return (n < 0 ? -n : n); }
 static __inline__ long labs (long n) { return (n < 0 ? -n : n); }
 #endif
+#endif
+
+#endif /* !defined (_STDLIB_H) */

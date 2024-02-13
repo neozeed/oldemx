@@ -1,5 +1,8 @@
 /* sys/utime.h (emx/gcc) */
 
+#if !defined (_SYS_UTIME_H)
+#define _SYS_UTIME_H
+
 #if !defined (_TIME_T_DEFINED)
 #define _TIME_T_DEFINED
 typedef long time_t;
@@ -15,3 +18,5 @@ struct utimbuf
 #endif
 
 int utime (const char *name, const struct utimbuf *times);
+
+#endif /* !defined (_SYS_UTIME_H) */

@@ -31,7 +31,7 @@ int spawnve (int mode, const char *name, const char * const *argv,
     for (p = envp; *p != NULL; ++p)
         {
         i = strlen (*p);
-        memcpy (d, *p, i+1);
+        (void)memcpy (d, *p, i+1);
         d += i+1;
         }
     *d = 0;
@@ -47,7 +47,7 @@ int spawnve (int mode, const char *name, const char * const *argv,
         {
         i = strlen (*p);
         *d++ = (char)(_ARG_DQUOTE|_ARG_NONZERO);
-        memcpy (d, *p, i+1);
+        (void)memcpy (d, *p, i+1);
         d += i+1;
         }
     i = __spawnve (&np);

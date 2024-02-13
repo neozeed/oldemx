@@ -29,14 +29,16 @@ chmod.o: chmod.c $(I)io.h $(I)sys/types.h $(I)sys/stat.h $(E) $(I)errno.h
 close.o: close.c $(E) $(I)io.h $(I)errno.h
 creat.o: creat.c $(I)io.h $(FCNTL)
 dup.o: dup.c $(I)io.h $(E) $(I)errno.h
-eof.o: eof.c $(I)io.h
+dup2.o: dup2.c $(I)io.h $(E) $(I)errno.h
+eof.o: eof.c $(I)io.h $(E) $(I)errno.h
 fcntl.o: fcntl.c $(E) $(FCNTL) $(I)errno.h
-fileleng.o: fileleng.c $(I)io.h
+fileleng.o: fileleng.c $(I)io.h $(E)
 fstat.o: fstat.c $(I)io.h $(E) $(I)sys/types.h $(I)sys/stat.h \
                  $(I)time.h $(FCNTL) $(E)
 fsync.o: fsync.c $(I)io.h $(E)
 ftruncat.o: ftruncat.c $(I)io.h $(E) $(I)errno.h
-ioctl.o: ioctl.c $(E) $(I)io.h $(I)stdlib.h $(I)sys/termio.h
+ioctl.o: ioctl.c $(E) $(I)io.h $(I)stdlib.h $(I)sys/termio.h $(I)sys/ioctl.h \
+                 $(I)errno.h $(I)stdarg.h
 isatty.o: isatty.c $(E) $(I)io.h $(I)errno.h
 lseek.o: lseek.c $(E) $(I)io.h $(I)errno.h
 mktemp.o: mktemp.c $(I)io.h $(I)string.h $(I)process.h $(I)errno.h
@@ -45,7 +47,7 @@ open.o: open.c $(E) $(I)io.h $(I)stdarg.h $(I)errno.h $(FCNTL) \
 read.o: read.c $(E) $(I)io.h $(I)errno.h $(I)string.h $(FCNTL)
 remove.o: remove.c $(E) $(I)io.h $(I)errno.h
 stat.o: stat.c $(I)io.h $(FCNTL) $(I)errno.h $(I)sys/types.h $(I)sys/stat.h
-tell.o: tell.c $(I)io.h
+tell.o: tell.c $(I)io.h $(E) $(I)errno.h
 truncate.o: truncate.c $(I)io.h $(FCNTL)
 unlink.o: unlink.c $(I)io.h
 write.o: write.c $(E) $(I)io.h $(I)errno.h $(I)string.h $(FCNTL)
@@ -90,6 +92,8 @@ setmode.o: setmode.c $(I)io.h $(FCNTL) $(I)errno.h $(E)
 setvbuf.o: setvbuf.c $(I)stdio.h $(E) $(I)stdlib.h
 sprintf.o: sprintf.c $(I)stdio.h $(I)stdarg.h $(E) $(I)limits.h
 sscanf.o: sscanf.c $(I)stdio.h $(I)stdarg.h $(E) $(I)limits.h
+select.o: select.c $(I)io.h $(I)sys/types.h $(I)sys/time.h $(E) $(I)stdlib.h \
+                   $(I)memory.h
 stdio.o: stdio.c $(I)stdio.h $(E) $(FCNTL)
 tmpfile.o: tmpfile.c $(I)stdio.h $(E) $(I)stdlib.h $(I)errno.h $(I)io.h \
                      $(I)string.h $(I)sys/param.h
@@ -115,7 +119,7 @@ _tmpbuf.o: _tmpbuf.c $(E) $(I)stdio.h $(I)io.h
 
 $(LIBC):  read.o write.o open.o close.o _iodata.o lseek.o isatty.o access.o \
     eof.o remove.o tell.o unlink.o fileleng.o creat.o fstat.o fsync.o dup.o \
-    fcntl.o pipe.o pclose.o popen.o \
+    fcntl.o pipe.o pclose.o popen.o dup2.o select.o \
     chmod.o stat.o mktemp.o ftruncat.o truncate.o fopen.o freopen.o \
     fclose.o fread.o fwrite.o fflush.o fgetc.o fputc.o fgetchar.o \
     fputchar.o fputs.o puts.o _flush.o _fill.o _fbuf.o _fopen.o stdio.o \

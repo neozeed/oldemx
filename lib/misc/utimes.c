@@ -20,7 +20,7 @@ int utime (const char *name, const struct utimbuf *times)
         return (-1);            /* open sets errno */
     if (times == NULL)
         {
-        time (&now.modtime);
+        (void)time (&now.modtime);
         times = &now;
         }
     tm = gmtime (&times->modtime);
@@ -37,7 +37,7 @@ int utime (const char *name, const struct utimbuf *times)
         }
     else
         result = 0;
-    close (handle);
+    (void)close (handle);
     return (result);
     }
 

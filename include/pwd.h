@@ -1,8 +1,7 @@
 /* pwd.h (emx/gcc) */
 
-#if !defined (__PWD_H)
-
-#define __PWD_H
+#if !defined (_PWD_H)
+#define _PWD_H
 
 struct passwd
     {
@@ -23,4 +22,4 @@ struct passwd *getpwnam (char *name);
 void setpwent (void);
 void endpwent (void);
 
-#endif
+#endif /* !defined (_PWD_H) */

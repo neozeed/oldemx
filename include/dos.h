@@ -1,5 +1,8 @@
 /* dos.h (emx/gcc) */
 
+#if !defined (_DOS_H)
+#define _DOS_H
+
 #if !defined (_REGS_DEFINED)
 #define _REGS_DEFINED
 
@@ -54,5 +57,4 @@ struct SREGS
 int _int86 (int int_num, union REGS *inp_regs, union REGS *out_regs);
 void _segread (struct SREGS *seg_regs);
 
-int _portaccess (unsigned first, unsigned last);
-void *_memaccess (unsigned first, unsigned last);
+#endif /* !defined (_DOS_H) */

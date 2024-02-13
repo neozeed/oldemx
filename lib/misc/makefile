@@ -63,6 +63,8 @@ syserr.o: syserr.c
 ulimit.o: ulimit.c $(I)stdlib.h $(I)errno.h $(E)
 ultoa.o: ultoa.c $(I)stdlib.h
 umask.o: umask.c $(E) $(I)stdlib.h
+_abspath.o: _abspath.c $(I)stdlib.h $(I)errno.h $(I)string.h $(I)alloca.h \
+            $(I)sys/param.h $(E)
 _assert.o: _assert.c $(I)stdlib.h $(I)stdio.h $(I)assert.h
 _chdir2.o: _chdir2.c $(I)stdlib.h $(I)errno.h $(E)
 _chdrive.o: _chdrive.c $(I)stdlib.h $(E)
@@ -81,8 +83,9 @@ _readkbd.o: _readkbd.c $(I)stdlib.h $(E)
 _respons.o: _respons.c $(I)stdlib.h $(I)stdio.h $(I)string.h $(E)
 _scrsize.o: _scrsize.c $(E)
 _searche.o: _searche.c $(I)stdlib.h $(I)string.h $(I)io.h
-_startup.o: _startup.c $(I)stdlib.h $(I)stdio.h $(E) $(FCNTL)
+_startup.o: _startup.c $(I)stdlib.h $(I)stdio.h $(E) $(FCNTL) $(I)sys/ioctl.h
 _swchar.o: _swchar.c $(I)stdlib.h $(E)
+_syserrn.o: _syserrn.c $(E)
 _wildcar.o: _wildcar.c $(I)stdlib.h $(I)stdio.h $(I)string.h $(E)
 free.o: free.c $(I)stdlib.h
 malloc.o: malloc.c $(E) $(I)stdlib.h
@@ -109,6 +112,7 @@ clock.o: clock.c $(E)
 ctime.o: ctime.c $(I)time.h
 difftime.o: difftime.c $(I)time.h
 ftime.o: ftime.c $(E) $(I)sys/timeb.h $(I)time.h
+gettimeo.o: gettimeo.c $(E) $(I)sys/time.h $(I)time.h
 gmtime.o: gmtime.c $(I)time.h $(I)stdlib.h
 localtim.o: localtim.c $(I)time.h
 mktime.o: mktime.c $(I)time.h $(E)
@@ -134,11 +138,12 @@ $(LIBC): _startup.o _cleanup.o syscalls.o \
     getpages.o _respons.o _searche.o _wildcar.o dirent.o alarm.o sleep.o \
     setjmp.o atof.o strtod.o div.o sbrk.o umask.o getpid.o signal.o raise.o \
     asctime.o localtim.o mktime.o ctime.o gmtime.o time.o clock.o utimes.o \
-    times.o difftime.o ftime.o kill.o ptrace.o \
+    times.o difftime.o ftime.o gettimeo.o kill.o ptrace.o \
     execve.o spawnv.o spawnve.o spawnvp.o spawnvpe.o _path.o system.o wait.o \
     spawnl.o spawnle.o spawnlp.o spawnlpe.o \
     _defext.o _fngetdr.o _fullpat.o _getcwd1.o _getcwd2.o _chdir2.o \
-    _swchar.o _readkbd.o _getdriv.o _core.o _chdrive.o _scrsize.o \
+    _swchar.o _readkbd.o _getdriv.o _core.o _chdrive.o _scrsize.o _abspath.o \
+    _syserrn.o \
     misc.mod
 	upda misc.mod misc.res $(LIBC)
 	-$(AR) dv $(LIBC) __.SYMDEF

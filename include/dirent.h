@@ -29,7 +29,7 @@ DIR *opendir (const char *name);
 struct dirent *readdir (DIR *dirp);
 void seekdir (DIR *dirp, long off);
 long telldir (DIR *dirp);
-void closedir (DIR *dirp);
+int closedir (DIR *dirp);
 void rewinddir (DIR *dirp);
 
-#endif
+#endif /* !defined (_DIRENT_H) */

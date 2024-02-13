@@ -1,8 +1,11 @@
 /* stdio.h (emx/gcc) */
 
-#if !defined (_SIZE_T)
-#define _SIZE_T
-typedef unsigned int size_t;
+#if !defined (_STDIO_H)
+#define _STDIO_H
+
+#if !defined (_SIZE_T_DEFINED)
+#define _SIZE_T_DEFINED
+typedef unsigned long size_t;
 #endif
 
 #if !defined (NULL)
@@ -27,6 +30,7 @@ struct _stdio
     int flags;
     int buf_size;
     int tmpidx;
+    int pid;
     char char_buf;
     char reserved1[3];
     };
@@ -55,15 +59,15 @@ extern struct _stdio _streams[];
 #define _IOREAD 0x01
 #define _IOWRT  0x02
 #define _IORW   0x04
-#define _IOEOF  0x20
-#define _IOERR  0x40
-#define _IOFBF  0x0000
-#define _IOLBF  0x1000
-#define _IONBF  0x2000
+#define _IOEOF  0x08
+#define _IOERR  0x10
+#define _IOFBF  0x00
+#define _IOLBF  0x20
+#define _IONBF  0x40
 #endif
 
 #if !defined (P_tmpdir)
-#define P_tmpdir "/"
+#define P_tmpdir "."
 #define L_tmpnam (sizeof (P_tmpdir) + 13)
 #endif
 
@@ -100,7 +104,9 @@ int fsetpos (FILE *stream, const fpos_t *pos);
 long ftell (FILE *stream);
 size_t fwrite (const void *buffer, size_t size, size_t count, FILE *stream);
 char *gets (char *buffer);
+int pclose (FILE *stream);
 void perror (const char *string);
+FILE *popen (const char *command, const char *mode);
 int printf (const char *format, ...);
 int puts (const char *string);
 int remove (const char *name);
@@ -127,8 +133,6 @@ int _flush (int c, FILE *stream);
 
 int _fseek_hdr (FILE *stream);
 
-#if !defined (_STDIO_H)
-#define _STDIO_H
 static int __inline__ fileno (FILE *s) { return (s->handle); }
 static int __inline__ feof (FILE *s) { return (s->flags & _IOEOF ? 1 : 0); }
 static int __inline__ ferror (FILE *s) { return (s->flags & _IOERR ? 1 : 0); }
@@ -141,4 +145,5 @@ static int __inline__ putc (int c, FILE *s)
                                : _flush (c, s)); }
 static int __inline__ getchar (void) { return (getc (stdin)); }
 static int __inline__ putchar (int c) { return (putc (c, stdout)); }
-#endif
+
+#endif /* !defined (_STDIO_H) */

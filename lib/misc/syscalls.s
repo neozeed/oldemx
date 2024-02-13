@@ -13,6 +13,7 @@
         .globl  ___core
         .globl  ___creat
         .globl  ___dup
+        .globl  ___dup2
         .globl  ___fcntl
         .globl  ___filetime
         .globl  ___findfirst
@@ -42,10 +43,12 @@
         .globl  ___rmdir
         .globl  ___sbrk
         .globl  ___scrsize
+        .globl  ___select
         .globl  ___signal
         .globl  ___sleep
         .globl  ___spawnve
         .globl  ___swchar
+        .globl  ___syserrno
         .globl  ___uflags
         .globl  ___ulimit
         .globl  ___umask
@@ -305,6 +308,19 @@ ___dup:
         jmp     sysreteax
 
 
+/ int __dup2 (int handle1, int handle2)
+
+        .align  2, 0x90
+
+___dup2:
+        pushl   %ebx
+        movl    2*4(%esp), %ebx         / handle1
+        movl    3*4(%esp), %ecx         / handle2
+        SYSCALL(0x46)
+        popl    %ebx
+        jmp     sysreteax
+
+
 / int __getcwd (char *buffer, char drive)
 
         .align  2, 0x90
@@ -442,7 +458,9 @@ ___raise:
         movl    1*4(%esp), %ecx         / sig
         movb    $14, %al                / raise
         SYSCALL(0x7f)
-        ret
+        jecxz   1f
+        movl    %ecx, _errno
+1:      ret
 
 
 / int __kill (int pid, int sig)
@@ -454,7 +472,9 @@ ___kill:
         movl    2*4(%esp), %ecx         / sig
         movb    $0x0d, %al              / kill
         SYSCALL(0x7f)
-        ret
+        jecxz   1f
+        movl    %ecx, _errno
+1:      ret
 
 
 / void (*__signal (int sig, void (*handler)()))(int sig)
@@ -751,5 +771,27 @@ ___fsync:
 ___scrsize:
         movl    1*4(%esp), %edx         / dst
         movb    $0x1d, %al              / __scrsize
+        SYSCALL(0x7f)
+        ret
+
+/ void __select (struct _select *args)
+
+        .align  2, 0x90
+
+___select:
+        movl    1*4(%esp), %edx         / args
+        movb    $0x1e, %al              / __select
+        SYSCALL(0x7f)
+        jecxz   1f
+        movl    %ecx, _errno
+1:      ret
+
+
+/ int __syserrno (void)
+
+        .align  2, 0x90
+
+___syserrno:
+        movb    $0x1f, %al              / __syserrno
         SYSCALL(0x7f)
         ret

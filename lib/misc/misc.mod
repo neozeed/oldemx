@@ -23,6 +23,7 @@ getenv.o
 getopt.o
 getpages.o
 getpid.o
+gettimeo.o
 getuid.o
 gmtime.o
 heapchk.o
@@ -66,6 +67,7 @@ ultoa.o
 umask.o
 utimes.o
 wait.o
+_abspath.o
 _assert.o
 _chdir2.o
 _chdrive.o
@@ -84,6 +86,7 @@ _readkbd.o
 _respons.o
 _scrsize.o
 _searche.o
-_swchar.o
 _startup.o
+_swchar.o
+_syserrn.o
 _wildcar.o
